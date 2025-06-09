@@ -1,0 +1,105 @@
+﻿@startuml
+
+package "Design Lab Bounded Context" {
+
+    package "Domain Layer" {
+        
+        enum EProjectStatus {
+            Blueprint
+            Garment
+            Template
+        }
+        
+        enum EGarmentGender {
+            MEN
+            WOMEN
+            UNISEX
+            KIDS
+        }
+        
+        enum EGarmentSize {
+            XS
+            S
+            M
+            L
+            XL
+            XXL
+        }
+        
+        enum ELayerType {
+            IMAGE
+            TEXT
+        }
+        
+        enum EGarmentColor {
+            BLACK
+            GRAY
+            LIGHT_GRAY
+            WHITE
+            RED
+            PINK
+            LIGHT_PURPLE
+            PURPLE
+            LIGHT_BLUE
+            CYAN
+            SKY_BLUE
+            BLUE
+            GREEN
+            LIGHT_GREEN
+            YELLOW
+            DARK_YELLOW
+        }
+
+        class "Project" {
+            ProjectId Id
+            UserId UserId
+            String Title
+            String PreviewImageUrl
+            EProjectStatus Status
+            EProjectGender Gender
+            EGarmentColor GarmentColor
+            EGarmentSize Size
+            Date CreatedAt
+            Date LastModifiedAt
+            Layer[] Layers
+        }
+        
+        abstract class "Layer" {
+            LayerId Id
+            int X
+            int Y
+            int Z
+            int Opacity
+            bool IsVisible
+            ELayerType Type
+            Date CreatedAt
+            Date LastModifiedAt
+        }
+        
+        class "ImageLayer" extends "Layer" {
+            String ImageUrl
+            Int Width
+            Int Height
+        }
+        
+        class "TextLayer" extends "Layer" {
+            String Text
+            int FontSize
+            String FontColor
+            String FontFamily
+            bool IsBold
+            bool IsItalic
+            bool IsUnderlined
+        }
+        
+        class GarmentColor {
+            EGarmentColor Value
+            ---
+            String ToHexCode()
+            
+        }
+        
+        Project "1" *-- "0..*" Layer : contains >
+    }
+}
+@enduml
