@@ -1,0 +1,11 @@
+namespace Q2.Web_Service.API.Design_Lab.Domain.Model.ValueObjects;
+
+public enum EGarmentSize
+{
+    XS,
+    S,
+    M,
+    L,
+    XL,
+    XXL,
+}
