@@ -2,20 +2,20 @@
 
 public enum EGarmentColor
 {
-    BLACK,
-    GRAY,
-    LIGHT_GRAY,
-    WHITE,
-    RED,
-    PINK,
-    LIGHT_PURPLE,
-    PURPLE,
-    LIGHT_BLUE,
-    CYAN,
-    SKY_BLUE,
-    BLUE,
-    GREEN,
-    LIGHT_GREEN,
-    YELLOW,
-    DARK_YELLOW
+    Black,
+    Gray,
+    LightGray,
+    White,
+    Red,
+    Pink,
+    LightPurple,
+    Purple,
+    LightBlue,
+    Cyan,
+    SkyBlue,
+    Blue,
+    Green,
+    LightGreen,
+    Yellow,
+    DarkYellow
 }

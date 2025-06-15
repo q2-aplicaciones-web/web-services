@@ -24,4 +24,10 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.11.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Design-Lab\Application\" />
+      <Folder Include="Design-Lab\Infrastructure\" />
+      <Folder Include="Design-Lab\Interfaces\" />
+    </ItemGroup>
+
 </Project>

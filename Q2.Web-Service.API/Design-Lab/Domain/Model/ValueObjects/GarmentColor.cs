@@ -13,22 +13,22 @@ public class GarmentColor
     {
         return Value switch
         {
-            EGarmentColor.BLACK => "#161615",
-            EGarmentColor.GRAY => "#403D3B",
-            EGarmentColor.LIGHT_GRAY => "#B3B1AF",
-            EGarmentColor.WHITE => "#EDEDED",
-            EGarmentColor.RED => "#B51B14",
-            EGarmentColor.PINK => "#F459B0",
-            EGarmentColor.LIGHT_PURPLE => "#D890E4",
-            EGarmentColor.PURPLE => "#693FA0",
-            EGarmentColor.LIGHT_BLUE => "#00A5BC",
-            EGarmentColor.CYAN => "#31B7C9",
-            EGarmentColor.SKY_BLUE => "#3F9BDC",
-            EGarmentColor.BLUE => "#1B3D92",
-            EGarmentColor.GREEN => "#1B8937",
-            EGarmentColor.LIGHT_GREEN => "#5BBE65",
-            EGarmentColor.YELLOW => "#FECD08",
-            EGarmentColor.DARK_YELLOW => "#F2AB00",
+       EGarmentColor.Black => "#161615",
+            EGarmentColor.Gray => "#403D3B",
+            EGarmentColor.LightGray => "#B3B1AF",
+            EGarmentColor.White => "#EDEDED",
+            EGarmentColor.Red => "#B51B14",
+            EGarmentColor.Pink => "#F459B0",
+            EGarmentColor.LightPurple => "#D890E4",
+            EGarmentColor.Purple => "#693FA0",
+            EGarmentColor.LightBlue => "#00A5BC",
+            EGarmentColor.Cyan => "#31B7C9",
+            EGarmentColor.SkyBlue => "#3F9BDC",
+            EGarmentColor.Blue => "#1B3D92",
+            EGarmentColor.Green => "#1B8937",
+            EGarmentColor.LightGreen => "#5BBE65",
+            EGarmentColor.Yellow => "#FECD08",
+            EGarmentColor.DarkYellow => "#F2AB00",
             _ => "#000000"
         };
     }
