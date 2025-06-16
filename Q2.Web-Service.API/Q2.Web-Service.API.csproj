@@ -24,4 +24,8 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.11.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DesignLab\Domain\Model\Queries\" />
+    </ItemGroup>
+
 </Project>
