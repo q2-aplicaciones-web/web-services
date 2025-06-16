@@ -1,6 +1,6 @@
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
-using Q2.Web_Service.API.Design_Lab.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;

@@ -3,7 +3,7 @@ using Q2.Web_Service.API.Design_Lab.Domain.Model.Aggregates;
 using Q2.Web_Service.API.Design_Lab.Domain.Model.Entities;
 using Q2.Web_Service.API.Design_Lab.Domain.Model.ValueObjects;
 
-namespace Q2.Web_Service.API.Design_Lab.Infrastructure.Persistence.EFC.Configuration.Extensions;
+namespace Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 public static class ModelBuilderExtensions
 {
