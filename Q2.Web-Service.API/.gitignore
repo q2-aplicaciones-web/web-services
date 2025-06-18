@@ -1,0 +1,32 @@
+# Archivos y carpetas de configuración de usuario
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Archivos de compilación
+bin/
+obj/
+
+# Archivos de publicación
+publish/
+
+# Archivos de configuración sensibles
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Archivos de logs
+*.log
+
+# Archivos generados por Rider
+.idea/
+*.sln.iml
+
+# Otros
+*.db
+*.DS_Store
+Thumbs.db
+
