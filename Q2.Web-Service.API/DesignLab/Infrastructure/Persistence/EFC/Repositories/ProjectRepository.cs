@@ -8,7 +8,7 @@ namespace Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Repositori
 
 public class ProjectRepository(AppDbContext context) : BaseRepository<Project>(context), IProjectRepository;
 {
-    public async Task<IEnumerable<Project>> GetAllProjectsByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Project?>> GetAllProjectsByUserIdAsync(Guid userId)
     {
         return await Context.Projects
             .Where(p => p.UserId == userId)
