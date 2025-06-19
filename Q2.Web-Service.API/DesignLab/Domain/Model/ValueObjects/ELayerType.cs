@@ -3,5 +3,5 @@
 public enum ELayerType
 {
     Image,
-    Video,
+    Text,
 }

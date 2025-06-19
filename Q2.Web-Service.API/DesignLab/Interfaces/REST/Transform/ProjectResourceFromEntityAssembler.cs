@@ -20,7 +20,7 @@ public class ProjectResourceFromEntityAssembler
             project.Gender,
             layers,
             project.CreatedAt.ToString(),
-            project.UpdatedAt.ToString(),
+            project.UpdatedAt.ToString()
         );
     }
 }

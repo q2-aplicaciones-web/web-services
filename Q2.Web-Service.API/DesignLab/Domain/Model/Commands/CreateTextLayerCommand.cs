@@ -1,5 +1,6 @@
 ﻿
-using Q2.WebService.API.ProductCatalog.Domain.Model.ValueObjects;
+
+using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
 
