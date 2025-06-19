@@ -1,3 +1,3 @@
 ﻿namespace Q2.Web_Service.API.UserManagement.Domain.Model.Queries;
 
-public record GetUserByIdQuery();
+public record GetUserByIdQuery(Guid UserId);
