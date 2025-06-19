@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Quri.Teelab.Api.Teelab.Analytics.Interfaces.Rest
 {
     [ApiController]
-    [Route("api/analytics/customer")]
+    [Route("api/v1/analytics/customer")]
     public class CustomerAnalyticsController : ControllerBase
     {
         private readonly CustomerAnalyticsQueryServiceImpl _customerAnalyticsQueryService;

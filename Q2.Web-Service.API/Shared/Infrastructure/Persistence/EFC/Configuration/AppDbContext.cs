@@ -10,29 +10,25 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
     /// <summary>
     ///     Application database context
     /// </summary>
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
 
         // Agrega automáticamente las fechas CreatedAt y UpdatedAt (si estás usando un interceptor)
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            optionsBuilder.AddCreatedUpdatedInterceptor(); // Requiere el paquete: EntityFrameworkCore.CreatedUpdatedDate
-            base.OnConfiguring(optionsBuilder);
+            builder.AddCreatedUpdatedInterceptor(); // Requiere el paquete: EntityFrameworkCore.CreatedUpdatedDate
+            base.OnConfiguring(builder);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
             // Configuración personalizada para DesignLab (puedes agregar más configuraciones por módulo)
-            modelBuilder.ApplyDesignLabConfiguration();
+            builder.ApplyDesignLabConfiguration();
 
             // Configuración para CustomerAnalytics
-            modelBuilder.Entity<CustomerAnalytics>()
+            builder.Entity<CustomerAnalytics>()
                 .Property(e => e.Id)
                 .HasConversion(
                     v => Guid.Parse(v.Value),
@@ -40,10 +36,8 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
                 );
 
             // Convención opcional de nombres en snake_case si has definido la extensión
-            modelBuilder.UseSnakeCaseNamingConvention(); // Asegúrate de tener implementada esta extensión
+            builder.UseSnakeCaseNamingConvention(); // Asegúrate de tener implementada esta extensión
         }
 
-        // DbSet para la entidad CustomerAnalytics
-        public DbSet<CustomerAnalytics> CustomerAnalytics { get; set; }
     }
 }

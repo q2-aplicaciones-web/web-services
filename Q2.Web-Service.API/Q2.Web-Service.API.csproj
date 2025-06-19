@@ -29,8 +29,6 @@
 
     <ItemGroup>
       <Folder Include="DesignLab\Application\Internal\QueryServices\" />
-      <Folder Include="DesignLab\Interfaces\REST\Resources\" />
-      <Folder Include="DesignLab\Interfaces\REST\Transform\" />
       <Folder Include="Shared\Infrastructure\Interfaces\" />
     </ItemGroup>
 

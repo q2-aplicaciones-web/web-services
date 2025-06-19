@@ -1,8 +1,9 @@
-﻿using Q2.Web_Service.API.Design_Lab.Domain.Model.Aggregates;
+﻿
+using Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
+using Q2.Web_Service.API.Shared.Domain.Repositories;
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Repositories;
 
-public interface ILayerRepository
+public interface ILayerRepository : IBaseRepository<Layer>
 {
-    Task<IEnumerable<Layer>> UpdateLayerAsync(Layer layer);
 }

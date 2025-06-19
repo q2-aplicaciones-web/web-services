@@ -1,4 +1,4 @@
-﻿namespace Q2.Web_Service.API.Design_Lab.Domain.Model.ValueObjects;
+﻿namespace Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 public class GarmentColor
 {
