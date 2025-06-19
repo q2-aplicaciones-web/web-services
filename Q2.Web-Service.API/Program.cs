@@ -34,7 +34,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        options.UseNpgsql(connectionString).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging()
+        options.UseNpgsql(connectionString).LogTo(Console.WriteLine, LogLevel.Debug).EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     }
     else if (builder.Environment.IsProduction())
