@@ -3,7 +3,6 @@ using Q2.Web_Service.API.DesignLab.Domain.Repositories;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Repositories;
 
