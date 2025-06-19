@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Q2.WebService.API.ProductCatalog.Domain.Model.Aggregates;
-using Q2.WebService.API.ProductCatalog.Domain.Model.Entities;
 
 namespace Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
