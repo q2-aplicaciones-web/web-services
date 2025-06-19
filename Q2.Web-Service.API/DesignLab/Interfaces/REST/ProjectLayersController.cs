@@ -9,10 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST;
 
-[ApiController]
-[Route("api/v1/projects/layers")]
-[Produces(MediaTypeNames.Application.Json)]
-[SwaggerTag("Available Project Endpoints")]
+
 public class ProjectLayersController(
     ILayerCommandService layerCommandService
 ) : ControllerBase

@@ -13,15 +13,13 @@ public class ProjectRepository(AppDbContext context) : BaseRepository<Project>(c
     {
         return await Context
             .Set<Project>()
-            .Include(project => project.UserId)
-            .Where(project => project.UserId.Id == userId).ToListAsync();
+            .Where(project => project.UserId == new UserId(userId)).ToListAsync();
     }
 
     public async Task<Project?> GetProjectByIdAsync(Guid projectId)
     {
         return await Context
             .Set<Project>()
-            .Include(project => project.UserId)
-            .FirstOrDefaultAsync(project => project.Id.Id == projectId);
+            .FirstOrDefaultAsync(project => project.Id == new ProjectId(projectId));
     }
 }

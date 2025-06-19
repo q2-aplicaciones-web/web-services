@@ -6,25 +6,31 @@ namespace Q2.Web_Service.API.DesignLab.Domain.Model.Aggregates;
 
 public partial class Project
 {
-    public ProjectId Id { get; private set; }
-    public string Title { get; private set; }
-    public UserId UserId { get; private set; }
-    public Uri PreviewUrl { get; private set; }
+    public ProjectId Id { get; private set; } = null!;
+    public string Title { get; private set; } = null!;
+    public UserId UserId { get; private set; } = null!;
+    public Uri? PreviewUrl { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     
-    public ICollection<Layer> Layers { get; private set; }
-    
-    // Constructor protegido requerido por EF Core
-    protected Project() { }
-
-    public Project(CreateProjectCommand command)
+    public ICollection<Layer> Layers { get; private set; } = null!;
+      // Constructor protegido requerido por EF Core
+    protected Project() 
+    {
+        // Initialize DateTime properties to avoid null constraint violations
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }public Project(CreateProjectCommand command)
     {
         Id = new ProjectId(Guid.NewGuid());
         Title = command.Title;
         UserId = command.UserId;
         PreviewUrl = null;
+        Color = command.GarmentColor;
+        Gender = command.GarmentGender;
+        Size = command.GarmentSize;
+        Status = EProjectStatus.Blueprint; // Default status
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         Layers = new List<Layer>();

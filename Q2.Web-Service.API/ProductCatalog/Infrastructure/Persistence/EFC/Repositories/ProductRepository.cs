@@ -1,76 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
+using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Q2.WebService.API.ProductCatalog.Domain.Model.Aggregates;
 using Q2.WebService.API.ProductCatalog.Domain.Model.ValueObjects;
 using Q2.WebService.API.ProductCatalog.Domain.Repositories;
-using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Configuration;
 
-namespace Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories
+namespace Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
+
+/// <summary>
+/// Implementation of the product repository
+/// </summary>
+public class ProductRepository(AppDbContext context) : BaseRepository<Product>(context), IProductRepository
 {
-    /// <summary>
-    /// Implementation of the product repository
-    /// </summary>
-    public class ProductRepository : IProductRepository
+    public async Task<Product?> FindByIdAsync(Guid id)
     {
-        private readonly ProductCatalogDbContext _dbContext;
+        return await Context.Set<Product>()
+            .Include(p => p.Comments)
+            .FirstOrDefaultAsync(p => p.Id == id);
+    }
 
-        public ProductRepository(ProductCatalogDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+    public async Task<IEnumerable<Product>> FindAllAsync()
+    {
+        return await Context.Set<Product>()
+            .Include(p => p.Comments)
+            .ToListAsync();
+    }
 
-        public async Task<Product> FindByIdAsync(Guid id)
-        {
-            return await _dbContext.Products
-                .Include(p => p.Comments)
-                .FirstOrDefaultAsync(p => p.Id == id);
-        }
+    public async Task<IEnumerable<Product>> FindByProjectIdAsync(ProjectId projectId)
+    {
+        return await Context.Set<Product>()
+            .Include(p => p.Comments)
+            .Where(p => p.ProjectId.Value == projectId.Value)
+            .ToListAsync();
+    }
 
-        public async Task<IEnumerable<Product>> FindAllAsync()
-        {
-            return await _dbContext.Products
-                .Include(p => p.Comments)
-                .ToListAsync();
-        }
+    public async Task<IEnumerable<Product>> FindByTagsAsync(List<string> tags)
+    {
+        if (tags == null || !tags.Any())
+            return new List<Product>();
 
-        public async Task<IEnumerable<Product>> FindByProjectIdAsync(ProjectId projectId)
-        {
-            return await _dbContext.Products
-                .Include(p => p.Comments)
-                .Where(p => p.ProjectId.Value == projectId.Value)
-                .ToListAsync();
-        }
+        return await Context.Set<Product>()
+            .Include(p => p.Comments)
+            .Where(p => p.Tags.Any(t => tags.Contains(t)))
+            .ToListAsync();
+    }
 
-        public async Task<IEnumerable<Product>> FindByTagsAsync(List<string> tags)
-        {
-            if (tags == null || !tags.Any())
-                return new List<Product>();
+    public async Task AddAsync(Product product)
+    {
+        await Context.Set<Product>().AddAsync(product);
+    }
 
-            // Using EF Core's Any and string.Contains to find products with any of the tags
-            return await _dbContext.Products
-                .Include(p => p.Comments)
-                .Where(p => p.Tags.Any(t => tags.Contains(t)))
-                .ToListAsync();
-        }
+    public Task UpdateAsync(Product product)
+    {
+        Context.Set<Product>().Update(product);
+        return Task.CompletedTask;
+    }
 
-        public async Task AddAsync(Product product)
-        {
-            await _dbContext.Products.AddAsync(product);
-        }
-
-        public Task UpdateAsync(Product product)
-        {
-            _dbContext.Products.Update(product);
-            return Task.CompletedTask;
-        }
-
-        public Task RemoveAsync(Product product)
-        {
-            _dbContext.Products.Remove(product);
-            return Task.CompletedTask;
-        }
+    public Task RemoveAsync(Product product)
+    {
+        Context.Set<Product>().Remove(product);
+        return Task.CompletedTask;
     }
 }

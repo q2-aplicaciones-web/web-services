@@ -1,11 +1,16 @@
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories;
+using Q2.Web_Service.API.DesignLab.Application.Internal.CommandServices;
+using Q2.Web_Service.API.DesignLab.Application.Internal.QueryServices;
 using Q2.Web_Service.API.DesignLab.Domain.Repositories;
+using Q2.Web_Service.API.DesignLab.Domain.Services;
 using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Repositories;
+using Q2.Web_Service.API.Shared.Domain.Repositories;
 using Q2.Web_Service.API.Shared.Infrastructure.Mediator.Cortex.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
-using Q2.WebService.API.Analytics.Application.Internal.QueryServices;
+using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Q2.WebService.API.ProductCatalog.Domain.Repositories;
+using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +39,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     if (builder.Environment.IsDevelopment())
     {
-        options.UseNpgsql(connectionString).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging()
+        options.UseNpgsql(connectionString).LogTo(Console.WriteLine, LogLevel.Debug).EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     }
     else if (builder.Environment.IsProduction())
@@ -49,6 +54,10 @@ builder.Services.AddSwaggerGen(options => {options.EnableAnnotations();});
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ILayerRepository, LayerRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProjectQueryService, ProjectQueryService>();
+builder.Services.AddScoped<IProjectCommandService, ProjectCommandService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services
     .AddDbContext<AppDbContext>(options =>

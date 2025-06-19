@@ -31,9 +31,7 @@ public static class ModelBuilderExtensions
             .HasConversion(
                 id => id.Id,
                 value => new UserId(value)
-            );
-
-        entity.Property(p => p.Title)
+            );        entity.Property(p => p.Title)
             .IsRequired()
             .HasMaxLength(30);
 
@@ -41,19 +39,14 @@ public static class ModelBuilderExtensions
             .IsRequired();
 
         entity.Property(p => p.PreviewUrl)
-            .IsRequired()
             .HasConversion(
-                uri => uri.ToString(),
-                str => new Uri(str)
-            );
-
-        entity.Property(p => p.CreatedAt)
-            .IsRequired()
-            .ValueGeneratedOnAdd();
+                uri => uri != null ? uri.ToString() : null,
+                str => str != null ? new Uri(str) : null
+            );        entity.Property(p => p.CreatedAt)
+            .IsRequired();
 
         entity.Property(p => p.UpdatedAt)
-            .IsRequired()
-            .ValueGeneratedOnAddOrUpdate();
+            .IsRequired();
 
         entity.Property(p => p.Status)
             .IsRequired();

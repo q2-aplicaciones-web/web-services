@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Configuration;
 using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
 using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
 
@@ -25,6 +26,7 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
             base.OnModelCreating(builder);
 
             // Configuración personalizada para DesignLab (puedes agregar más configuraciones por módulo)
+            builder.ApplyAnalyticsConfiguration();
             builder.ApplyDesignLabConfiguration();
 
             // Configuración para CustomerAnalytics
