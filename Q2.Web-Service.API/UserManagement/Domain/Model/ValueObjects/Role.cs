@@ -2,5 +2,8 @@
 
 public enum Role
 {
-    
+    Admin,
+    User,
+    Manufacturer,
+    Customer
 }
