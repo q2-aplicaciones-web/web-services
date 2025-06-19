@@ -17,6 +17,9 @@ public class Layer
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
+    // Constructor protegido requerido por EF Core
+    protected Layer() { }
+
     public Layer(CreateTextLayerCommand command)
     {
         Id = new LayerId(Guid.NewGuid());

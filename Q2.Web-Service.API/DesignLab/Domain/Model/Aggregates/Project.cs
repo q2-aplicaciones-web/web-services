@@ -1,5 +1,4 @@
-﻿
-using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
+﻿using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
 using Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
 using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
@@ -17,6 +16,9 @@ public partial class Project
     
     public ICollection<Layer> Layers { get; private set; }
     
+    // Constructor protegido requerido por EF Core
+    protected Project() { }
+
     public Project(CreateProjectCommand command)
     {
         Id = new ProjectId(Guid.NewGuid());
