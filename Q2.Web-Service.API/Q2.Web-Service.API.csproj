@@ -32,7 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DesignLab\Application\Internal\QueryServices\" />
       <Folder Include="Shared\Infrastructure\Interfaces\" />
     </ItemGroup>
 

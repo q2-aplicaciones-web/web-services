@@ -1,6 +1,8 @@
 using Q2.Web_Service.API.Shared.Domain.Repositories;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 
+namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+
 /// <summary>
 ///     Unit of work implementation
 /// </summary>

@@ -5,5 +5,6 @@ namespace Q2.Web_Service.API.DesignLab.Domain.Services;
 
 public interface IProjectQueryService
 {
-    Task<List<Project>> Handle(GetProjectsByUserIdQuery query);
+    Task<IEnumerable<Project>> Handle(GetProjectsByUserIdQuery query);
+    Task<Project?> Handle(GetProjectByIdQuery query);
 }

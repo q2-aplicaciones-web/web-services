@@ -2,7 +2,7 @@ namespace Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 public enum EGarmentGender
 {
-    Male,
+    Men,
     Women,
     Unisex,
     Kids,
