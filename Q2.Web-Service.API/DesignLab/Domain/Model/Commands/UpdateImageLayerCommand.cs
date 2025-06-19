@@ -1,3 +1,3 @@
-﻿namespace Q2.Web_Service.API.Design_Lab.Domain.Model.Commands;
+﻿namespace Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
 
 public record UpdateImageLayerCommand();

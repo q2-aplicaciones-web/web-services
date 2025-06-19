@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Q2.Web_Service.API.Design_Lab.Domain.Model.Aggregates;
-using Q2.Web_Service.API.Design_Lab.Domain.Model.Entities;
-using Q2.Web_Service.API.Design_Lab.Domain.Model.ValueObjects;
+using Q2.Web_Service.API.DesignLab.Domain.Model.Aggregates;
+using Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
+using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
 

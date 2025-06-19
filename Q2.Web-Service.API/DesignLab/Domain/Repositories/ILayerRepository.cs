@@ -1,4 +1,5 @@
-﻿using Q2.Web_Service.API.Design_Lab.Domain.Model.Aggregates;
+﻿
+using Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Repositories;
 

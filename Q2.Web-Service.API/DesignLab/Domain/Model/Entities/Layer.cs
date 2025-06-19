@@ -1,6 +1,6 @@
-﻿using Q2.Web_Service.API.Design_Lab.Domain.Model.ValueObjects;
+﻿using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
-namespace Q2.Web_Service.API.Design_Lab.Domain.Model.Aggregates;
+namespace Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
 
 public class Layer
 {
