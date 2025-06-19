@@ -15,24 +15,20 @@ namespace Q2.Web_Service.API.DesignLab.Interfaces.REST;
 public class ProjectController(
     IProjectCommandService projectCommandService,
     IProjectQueryService projectQueryService) : ControllerBase
-{
-
-    [HttpGet("users/{userId")]
+{    [HttpGet("users/{userId}")]
     public async Task<IActionResult> GetProjectsByUserId([FromRoute] Guid userId)
     {
+        var getProjectsByUserIdQuery = new GetProjectsByUserIdQuery(userId);
+        var projects = await projectQueryService.Handle(getProjectsByUserIdQuery);
+        if (projects is null || !projects.Any())
         {
-            var getProjectsByUserIdQuery = new GetProjectsByUserIdQuery(userId);
-            var projects = await projectQueryService.Handle(getProjectsByUserIdQuery);
-            if (projects is null || !projects.Any())
-            {
-                return NotFound($"No projects found for user with ID {userId}.");
-            }
-
-            // Convert to 
-            var projectsResources = projects.Select(ProjectResourceFromEntityAssembler.toResourceFromEntity).ToList();
-            
-            return Ok(projectsResources);
+            return NotFound($"No projects found for user with ID {userId}.");
         }
+
+        // Convert to 
+        var projectsResources = projects.Select(ProjectResourceFromEntityAssembler.toResourceFromEntity).ToList();
+        
+        return Ok(projectsResources);
     }
     
 }
