@@ -42,6 +42,7 @@ public class ProjectLayersController(
     {
         try
         {
+            Console.Out.WriteLine($"Creating text layer for project {projectId} with resource: {resource}");
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
@@ -58,6 +59,8 @@ public class ProjectLayersController(
             // Validate required fields
             if (string.IsNullOrWhiteSpace(resource.Text))
             {
+                // print the error
+                Console.Out.WriteLine("Text cannot be null or empty");
                 return BadRequest(new ErrorResource(
                     "Text cannot be null or empty",
                     "INVALID_TEXT",
@@ -67,6 +70,8 @@ public class ProjectLayersController(
 
             if (string.IsNullOrWhiteSpace(resource.FontColor))
             {
+                // print the error
+                Console.Out.WriteLine("Font color cannot be null or empty");
                 return BadRequest(new ErrorResource(
                     "Font color cannot be null or empty",
                     "INVALID_FONT_COLOR",
@@ -76,6 +81,9 @@ public class ProjectLayersController(
 
             if (string.IsNullOrWhiteSpace(resource.FontFamily))
             {
+                // print the error
+                Console.Out.WriteLine("Font family cannot be null or empty");
+                
                 return BadRequest(new ErrorResource(
                     "Font family cannot be null or empty",
                     "INVALID_FONT_FAMILY",
@@ -85,6 +93,8 @@ public class ProjectLayersController(
 
             if (resource.FontSize <= 0)
             {
+                // print the error
+                Console.Out.WriteLine("Font size must be a positive number");
                 return BadRequest(new ErrorResource(
                     "Font size must be a positive number",
                     "INVALID_FONT_SIZE",
@@ -107,7 +117,15 @@ public class ProjectLayersController(
             }
 
             // Get the created layer to return full details
-            var getLayerByIdQuery = new GetLayerByIdQuery(new LayerId(layerId.Id));
+            if (!layerId.HasValue)
+            {
+                return StatusCode(500, new ErrorResource(
+                    "Layer ID is null after creation",
+                    "NULL_LAYER_ID",
+                    500,
+                    DateTime.UtcNow));
+            }
+            var getLayerByIdQuery = new GetLayerByIdQuery(layerId.Value); // Use non-nullable Guid
             var layer = layerQueryService.Handle(getLayerByIdQuery);
 
             if (layer is null)
@@ -120,7 +138,7 @@ public class ProjectLayersController(
             }
 
             var layerResource = LayerResourceFromEntityAssembler.FromEntity(layer);
-            return CreatedAtAction(nameof(CreateTextLayer), new { projectId, layerId = layerId.Id }, layerResource);
+            return CreatedAtAction(nameof(CreateTextLayer), new { projectId, layerId }, layerResource);
         }
         catch (Exception ex)
         {
@@ -227,7 +245,15 @@ public class ProjectLayersController(
             }
 
             // Get the created layer to return full details
-            var getLayerByIdQuery = new GetLayerByIdQuery(new LayerId(layerId.Id));
+            if (!layerId.HasValue)
+            {
+                return StatusCode(500, new ErrorResource(
+                    "Layer ID is null after creation",
+                    "NULL_LAYER_ID",
+                    500,
+                    DateTime.UtcNow));
+            }
+            var getLayerByIdQuery = new GetLayerByIdQuery(layerId.Value); // Use non-nullable Guid
             var layer = layerQueryService.Handle(getLayerByIdQuery);
 
             if (layer is null)
@@ -240,7 +266,7 @@ public class ProjectLayersController(
             }
 
             var layerResource = LayerResourceFromEntityAssembler.FromEntity(layer);
-            return CreatedAtAction(nameof(CreateImageLayer), new { projectId, layerId = layerId.Id }, layerResource);
+            return CreatedAtAction(nameof(CreateImageLayer), new { projectId, layerId }, layerResource);
         }
         catch (Exception ex)
         {
@@ -319,4 +345,4 @@ public class ProjectLayersController(
                 DateTime.UtcNow));
         }
     }
-}   
+}

@@ -2,4 +2,4 @@
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Model.Queries;
 
-public record GetLayerByIdQuery(LayerId LayerId);
+public record GetLayerByIdQuery(Guid LayerId);

@@ -5,7 +5,7 @@ namespace Q2.Web_Service.API.DesignLab.Domain.Services;
 
 public interface ILayerCommandService
 {
-    Task<LayerId?> Handle(CreateTextLayerCommand command);
-    Task<LayerId?> Handle(CreateImageLayerCommand command);
-    Task<LayerId?> Handle(DeleteProjectLayerCommand command);
+    Task<Guid?> Handle(CreateTextLayerCommand command);
+    Task<Guid?> Handle(CreateImageLayerCommand command);
+    Task<Guid?> Handle(DeleteProjectLayerCommand command);
 }

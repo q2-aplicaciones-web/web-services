@@ -71,11 +71,7 @@ public static class ModelBuilderExtensions
 
         entity.Property(l => l.Id)
             .IsRequired()
-            .ValueGeneratedOnAdd()
-            .HasConversion(
-                id => id.Id,
-                value => new LayerId(value)
-            );
+            .ValueGeneratedOnAdd(); // Ahora es Guid, no necesita conversión
 
         entity.Property(l => l.ProjectId)
             .IsRequired()

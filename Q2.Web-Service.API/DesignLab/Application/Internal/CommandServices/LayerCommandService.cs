@@ -9,45 +9,40 @@ namespace Q2.Web_Service.API.DesignLab.Application.Internal.CommandServices;
 
 public class LayerCommandService(ILayerRepository layerRepository, IProjectRepository projectRepository, IUnitOfWork unitOfWork) : ILayerCommandService
 {
-    public async Task<LayerId?> Handle(CreateTextLayerCommand command)
+    public async Task<Guid?> Handle(CreateTextLayerCommand command)
     {
         var layer = new TextLayer(command);
         await layerRepository.AddAsync(layer);
         await unitOfWork.CompleteAsync();
         
-        // Here should be executed all events
+        // Aquí puedes ejecutar eventos si es necesario
         
         return layer.Id;
     }
     
-    public async Task<LayerId?> Handle(CreateImageLayerCommand command)
+    public async Task<Guid?> Handle(CreateImageLayerCommand command)
     {
         var layer = new ImageLayer(command);
         await layerRepository.AddAsync(layer);
         await unitOfWork.CompleteAsync();
         
-        // Here should be executed all events
+        // Aquí puedes ejecutar eventos si es necesario
         
         return layer.Id;
     }
     
-    public async Task<LayerId?> Handle(DeleteProjectLayerCommand command)
+    public async Task<Guid?> Handle(DeleteProjectLayerCommand command)
     {
         var project = await projectRepository.GetProjectByIdAsync(Guid.Parse(command.ProjectId));
         if (project == null)
-        {
             throw new ArgumentException("Project not found", nameof(command.ProjectId));
-        }
 
         var layer = project.Layers.FirstOrDefault(l => l.Id.ToString() == command.LayerId);
         if (layer == null)
-        {
             throw new ArgumentException("Layer not found in the project", nameof(command.LayerId));
-        }
 
         project.RemoveLayer(layer);
         await unitOfWork.CompleteAsync();
-
         return layer.Id;
     }
 

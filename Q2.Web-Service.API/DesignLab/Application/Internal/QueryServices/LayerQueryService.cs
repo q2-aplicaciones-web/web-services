@@ -9,7 +9,7 @@ public class LayerQueryService(ILayerRepository layerRepository) : ILayerQuerySe
 {
     public Layer Handle(GetLayerByIdQuery query)
     {
-        return layerRepository.FindByIdAsync(query.LayerId.Id).GetAwaiter().GetResult() ?? 
-               throw new InvalidOperationException($"Layer with id {query.LayerId.Id} not found");
+        return layerRepository.FindByIdAsync(query.LayerId).GetAwaiter().GetResult() ?? 
+               throw new InvalidOperationException($"Layer with id {query.LayerId} not found");
     }
 }

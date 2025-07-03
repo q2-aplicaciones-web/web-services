@@ -15,28 +15,28 @@ public class LayerResourceFromEntityAssembler
         };
         if (entity.LayerType == ELayerType.Image)
         {
-            // Cast the entity to ImageLayer to access specific properties
-            var imageLayer = entity as ImageLayer;
-            
-            // Add all the properties that are specific to Image Layer
-            Details.Add("ImageUrl", imageLayer.ImageUrl); // Placeholder for actual image URL
-            Details.Add("Width", imageLayer.Width);
-            Details.Add("Height", imageLayer.Height);
+            if (entity is ImageLayer imageLayer)
+            {
+                Details.Add("ImageUrl", imageLayer.ImageUrl); // Placeholder for actual image URL
+                Details.Add("Width", imageLayer.Width);
+                Details.Add("Height", imageLayer.Height);
+            }
         } else if (entity.LayerType == ELayerType.Text)
         {
-            var textLayer = entity as TextLayer;
-            // Add all the properties that are specific to Text Layer
-            Details.Add("TextContent", textLayer.Text);
-            Details.Add("FontColor", textLayer.FontColor);
-            Details.Add("FontFamily", textLayer.FontFamily);
-            Details.Add("FontSize", textLayer.FontSize);
-            Details.Add("IsBold", textLayer.IsBold);
-            Details.Add("IsItalic", textLayer.IsItalic);
-            Details.Add("IsUnderlined", textLayer.IsUnderline);
+            if (entity is TextLayer textLayer)
+            {
+                Details.Add("TextContent", textLayer.Text);
+                Details.Add("FontColor", textLayer.FontColor);
+                Details.Add("FontFamily", textLayer.FontFamily);
+                Details.Add("FontSize", textLayer.FontSize);
+                Details.Add("IsBold", textLayer.IsBold);
+                Details.Add("IsItalic", textLayer.IsItalic);
+                Details.Add("IsUnderlined", textLayer.IsUnderline);
+            }
         }
 
         return new LayerResource(
-            entity.Id.Id,
+            entity.Id, // Cambiado: ahora es Guid
             entity.X,
             entity.Y,
             entity.Z,

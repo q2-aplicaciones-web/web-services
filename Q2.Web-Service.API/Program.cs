@@ -26,6 +26,11 @@ using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositori
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Habilitar logging a consola y debug para ver todos los mensajes
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
