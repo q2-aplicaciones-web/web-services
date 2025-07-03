@@ -14,4 +14,6 @@ public class ImageLayer : Layer
         Width = command.Width;
         Height = command.Height;
     }
+    
+    protected ImageLayer() { }
 }

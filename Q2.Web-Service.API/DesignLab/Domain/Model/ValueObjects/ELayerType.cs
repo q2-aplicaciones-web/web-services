@@ -2,6 +2,7 @@
 
 public enum ELayerType
 {
+    Base,
     Image,
     Text,
 }

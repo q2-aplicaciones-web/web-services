@@ -67,11 +67,12 @@ public static class ModelBuilderExtensions
     private static void ConfigureLayer(ModelBuilder builder)
     {
         var entity = builder.Entity<Layer>();
+    
         entity.HasKey(l => l.Id);
 
         entity.Property(l => l.Id)
             .IsRequired()
-            .ValueGeneratedOnAdd(); // Ahora es Guid, no necesita conversión
+            .ValueGeneratedOnAdd();
 
         entity.Property(l => l.ProjectId)
             .IsRequired()
@@ -94,5 +95,38 @@ public static class ModelBuilderExtensions
         entity.Property(l => l.UpdatedAt)
             .IsRequired()
             .ValueGeneratedOnAddOrUpdate();
+
+        // Usamos TPH: Table Per Hierarchy
+        entity.HasDiscriminator<ELayerType>("LayerType")
+            .HasValue<Layer>(ELayerType.Base)
+            .HasValue<TextLayer>(ELayerType.Text)
+            .HasValue<ImageLayer>(ELayerType.Image);
+
+        // Configuración para TextLayer
+        builder.Entity<TextLayer>(tl =>
+        {
+            tl.Property(t => t.Text).IsRequired();
+            tl.Property(t => t.FontSize).IsRequired();
+            tl.Property(t => t.FontColor).IsRequired();
+            tl.Property(t => t.FontFamily).IsRequired();
+            tl.Property(t => t.IsBold).IsRequired();
+            tl.Property(t => t.IsItalic).IsRequired();
+            tl.Property(t => t.IsUnderline).IsRequired();
+        });
+
+        // Configuración para ImageLayer
+        builder.Entity<ImageLayer>(il =>
+        {
+            il.Property(i => i.ImageUrl)
+                .IsRequired()
+                .HasConversion(
+                    uri => uri.ToString(),
+                    str => new Uri(str)
+                );
+            il.Property(i => i.Width).IsRequired();
+            il.Property(i => i.Height).IsRequired();
+        });
     }
+    
+    
 }

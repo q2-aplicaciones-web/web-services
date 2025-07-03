@@ -7,10 +7,10 @@ namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 public class CreateImageLayerCommandFromResourceAssembler
 {
     public static CreateImageLayerCommand ToCommandFromResource(
-        CreateImageLayerResource resource)
+        CreateImageLayerResource resource, Guid projectId)
     {
         return new CreateImageLayerCommand(
-            ProjectId.of(resource.ProjectId),
+            new ProjectId(projectId),
             resource.ImageUrl,
             int.Parse(resource.Width),
             int.Parse(resource.Height));

@@ -22,4 +22,5 @@ public class TextLayer : Layer
         IsItalic = command.IsItalic;
         IsUnderline = command.IsUnderline;
     }
+    protected TextLayer() { }
 }

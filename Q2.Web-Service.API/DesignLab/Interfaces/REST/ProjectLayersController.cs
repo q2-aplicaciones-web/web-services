@@ -172,19 +172,6 @@ public class ProjectLayersController(
     {
         try
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage);
-
-                return BadRequest(new ErrorResource(
-                    "Invalid input data",
-                    string.Join(", ", errors),
-                    400,
-                    DateTime.UtcNow));
-            }
-
             // Validate required fields
             if (string.IsNullOrWhiteSpace(resource.ImageUrl))
             {
@@ -232,7 +219,7 @@ public class ProjectLayersController(
                     DateTime.UtcNow));
             }
 
-            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(resource, projectId);
             var layerId = await layerCommandService.Handle(createImageLayerCommand);
 
             if (layerId is null)
@@ -339,7 +326,7 @@ public class ProjectLayersController(
         catch (Exception ex)
         {
             return StatusCode(500, new ErrorResource(
-                "An error occurred while deleting the layer",
+                "An error occurred while deleting the layer XD",
                 ex.Message,
                 500,
                 DateTime.UtcNow));
