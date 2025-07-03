@@ -42,7 +42,7 @@ public class LayerResourceFromEntityAssembler
             entity.Z,
             entity.Opacity,
             entity.IsVisible,
-            entity.LayerType,
+            entity.LayerType.ToString(),
             entity.CreatedAt.ToString(),
             entity.UpdatedAt.ToString(),
             Details

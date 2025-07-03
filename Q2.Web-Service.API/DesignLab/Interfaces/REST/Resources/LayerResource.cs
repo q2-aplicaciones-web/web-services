@@ -9,7 +9,7 @@ public record LayerResource(
     int Z,
     float Opacity,
     bool IsVisible,
-    ELayerType LayerType,
+    string LayerType,
     string CreatedAt,
     string UpdatedAt,
     Dictionary<string, object> Details

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
 using Q2.Web_Service.API.IAM.Domain.Model.Queries;
 using Q2.Web_Service.API.IAM.Domain.Services;
@@ -25,9 +26,20 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         ITokenService tokenService)
     {
         Console.WriteLine("Entering InvokeAsync");
+        
+        // Skip authorization in development environment
+        var environment = context.RequestServices.GetService<IWebHostEnvironment>();
+        if (environment?.IsDevelopment() == true)
+        {
+            Console.WriteLine("Development environment - skipping authorization");
+            await next(context);
+            return;
+        }
+        
         // skip authorization if endpoint is decorated with [AllowAnonymous] attribute
         var allowAnonymous = context.Request.HttpContext.GetEndpoint()!.Metadata
-            .Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
+            .Any(m => m.GetType() == typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute) ||
+                     m.GetType() == typeof(Attributes.AllowAnonymousAttribute));
         Console.WriteLine($"Allow Anonymous is {allowAnonymous}");
         if (allowAnonymous)
         {

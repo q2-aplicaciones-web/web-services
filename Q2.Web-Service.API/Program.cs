@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +17,7 @@ using Q2.Web_Service.API.IAM.Domain.Repositories;
 using Q2.Web_Service.API.IAM.Domain.Services;
 using Q2.Web_Service.API.IAM.Infrastructure.Hashing.BCrypt.Services;
 using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
 using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Services;
 using Q2.Web_Service.API.Shared.Domain.Repositories;
@@ -25,11 +29,6 @@ using Q2.WebService.API.ProductCatalog.Domain.Repositories;
 using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Habilitar logging a consola y debug para ver todos los mensajes
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -137,6 +136,31 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // Mediator Configuration
 builder.Services.AddScoped(typeof(ICommandPipelineBehavior<>), typeof(LogginCommandBehavior<>));
 
+// Add Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    var tokenSettings = builder.Configuration.GetSection("TokenSettings");
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = tokenSettings["Issuer"],
+        ValidAudience = tokenSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings["Secret"] ?? "defaultsecretkey"))
+    };
+});
+
+// Add Authorization
+builder.Services.AddAuthorization();
+
 // Add Cortex Mediator for Event Handling
 builder.Services.AddCortexMediator(
     configuration: builder.Configuration,
@@ -152,41 +176,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    
-    try
-    {
-        logger.LogInformation("Ensuring database is created and updated...");
-        
-        // Ensure database is created with all tables
-        var created = context.Database.EnsureCreated();
-        if (created)
-        {
-            logger.LogInformation("Database was created successfully");
-        }
-        else
-        {
-            logger.LogInformation("Database already exists");
-        }
-        
-        // Check if there are any pending migrations and apply them
-        var pendingMigrations = context.Database.GetPendingMigrations().ToList();
-        if (pendingMigrations.Any())
-        {
-            logger.LogInformation($"Applying {pendingMigrations.Count} pending migrations...");
-            context.Database.Migrate();
-            logger.LogInformation("Migrations applied successfully");
-        }
-        else
-        {
-            logger.LogInformation("No pending migrations");
-        }
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "An error occurred while creating/updating the database");
-        throw;
-    }
+    context.Database.EnsureCreated();
 }
 
 // Configure the HTTP request pipeline.
@@ -201,7 +191,12 @@ app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
 
+// Add Authentication and Authorization to Pipeline (in the correct order)
+app.UseAuthentication();
 app.UseAuthorization();
+
+// Add Authorization Middleware to Pipeline (after authentication)
+app.UseRequestAuthorization();
 
 app.MapControllers();
 

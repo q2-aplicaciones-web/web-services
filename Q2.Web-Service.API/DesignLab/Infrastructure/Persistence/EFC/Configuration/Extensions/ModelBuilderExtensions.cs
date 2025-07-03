@@ -42,7 +42,9 @@ public static class ModelBuilderExtensions
             .HasConversion(
                 uri => uri != null ? uri.ToString() : null,
                 str => str != null ? new Uri(str) : null
-            );        entity.Property(p => p.CreatedAt)
+            );
+            
+        entity.Property(p => p.CreatedAt)
             .IsRequired();
 
         entity.Property(p => p.UpdatedAt)
