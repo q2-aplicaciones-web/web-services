@@ -1,4 +1,4 @@
-namespace Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
 /**
  * This attribute is used to decorate controllers and actions that do not require authorization.

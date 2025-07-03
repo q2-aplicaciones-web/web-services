@@ -1,4 +1,4 @@
-namespace Q2.Web_Service.API.IAM.Domain.Model.Commands;
+namespace ACME.LearningCenterPlatform.API.IAM.Domain.Model.Commands;
 
 /**
  * <summary>

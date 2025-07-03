@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
+namespace ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
 
 /**
  * <summary>
@@ -16,7 +16,7 @@ public partial class User(string username, string passwordHash)
     {
     }
 
-    public Guid Id { get; private set; } = Guid.NewGuid();
+    public int Id { get; }
     public string Username { get; private set; } = username;
 
     [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;

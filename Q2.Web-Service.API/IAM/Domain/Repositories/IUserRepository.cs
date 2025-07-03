@@ -1,7 +1,7 @@
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
-using Q2.Web_Service.API.Shared.Domain.Repositories;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.Shared.Domain.Repositories;
 
-namespace Q2.Web_Service.API.IAM.Domain.Repositories;
+namespace ACME.LearningCenterPlatform.API.IAM.Domain.Repositories;
 
 /**
  * <summary>
@@ -13,15 +13,6 @@ namespace Q2.Web_Service.API.IAM.Domain.Repositories;
  */
 public interface IUserRepository : IBaseRepository<User>
 {
-    /**
-     * <summary>
-     *     Find a user by id with Guid
-     * </summary>
-     * <param name="id">The user id to search</param>
-     * <returns>The user</returns>
-     */
-    Task<User?> FindByIdAsync(Guid id);
-
     /**
      * <summary>
      *     Find a user by id

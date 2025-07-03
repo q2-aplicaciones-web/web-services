@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
-using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
-using Q2.Web_Service.API.IAM.Domain.Model.Queries;
-using Q2.Web_Service.API.IAM.Domain.Services;
-using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Queries;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Services;
+using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
-namespace Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Components;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
 
 /**
  * RequestAuthorizationMiddleware is a custom middleware.
@@ -26,20 +25,9 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         ITokenService tokenService)
     {
         Console.WriteLine("Entering InvokeAsync");
-        
-        // Skip authorization in development environment
-        var environment = context.RequestServices.GetService<IWebHostEnvironment>();
-        if (environment?.IsDevelopment() == true)
-        {
-            Console.WriteLine("Development environment - skipping authorization");
-            await next(context);
-            return;
-        }
-        
         // skip authorization if endpoint is decorated with [AllowAnonymous] attribute
         var allowAnonymous = context.Request.HttpContext.GetEndpoint()!.Metadata
-            .Any(m => m.GetType() == typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute) ||
-                     m.GetType() == typeof(Attributes.AllowAnonymousAttribute));
+            .Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
         Console.WriteLine($"Allow Anonymous is {allowAnonymous}");
         if (allowAnonymous)
         {

@@ -1,6 +1,6 @@
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
 
-namespace Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+namespace ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
 
 /**
  * <summary>
@@ -28,5 +28,5 @@ public interface ITokenService
      * <param name="token">The token to validate</param>
      * <returns>The user id if the token is valid, null otherwise</returns>
      */
-    Task<Guid?> ValidateToken(string token);
+    Task<int?> ValidateToken(string token);
 }

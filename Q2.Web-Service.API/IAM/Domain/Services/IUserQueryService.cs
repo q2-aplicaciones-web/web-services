@@ -1,7 +1,7 @@
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
-using Q2.Web_Service.API.IAM.Domain.Model.Queries;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Queries;
 
-namespace Q2.Web_Service.API.IAM.Domain.Services;
+namespace ACME.LearningCenterPlatform.API.IAM.Domain.Services;
 
 /**
  * <summary>

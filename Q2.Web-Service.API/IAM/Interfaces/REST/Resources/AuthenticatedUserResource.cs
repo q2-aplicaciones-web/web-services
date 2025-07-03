@@ -1,3 +1,3 @@
-namespace Q2.Web_Service.API.IAM.Interfaces.REST.Resources;
+namespace ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Resources;
 
-public record AuthenticatedUserResource(Guid Id, string Username, string Token);
+public record AuthenticatedUserResource(int Id, string Username, string Token);

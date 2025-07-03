@@ -1,4 +1,4 @@
-namespace Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 
 /**
  * <summary>
@@ -8,5 +8,5 @@ namespace Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
  */
 public class TokenSettings
 {
-    public required string Secret { get; set; }
+    public string Secret { get; set; }
 }

@@ -1,11 +1,11 @@
-namespace Q2.Web_Service.API.IAM.Domain.Model.Queries;
+namespace ACME.LearningCenterPlatform.API.IAM.Domain.Model.Queries;
 
 /**
  * <summary>
- *     The get user by id query
+ *     The get all users query
  * </summary>
  * <remarks>
  *     This query object includes the user id to search
  * </remarks>
  */
-public record GetUserByIdQuery(Guid Id);
+public record GetUserByIdQuery(int Id);

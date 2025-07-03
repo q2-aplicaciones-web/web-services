@@ -2,13 +2,13 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using System.Text;
-using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
-using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Services;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
 
 /**
  * <summary>
@@ -57,7 +57,7 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
      * <param name="token">The token to validate</param>
      * <returns>The user id if the token is valid, null otherwise</returns>
      */
-    public async Task<Guid?> ValidateToken(string token)
+    public async Task<int?> ValidateToken(string token)
     {
         // If token is null or empty
         if (string.IsNullOrEmpty(token))
@@ -79,7 +79,7 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
             });
 
             var jwtToken = (JsonWebToken)tokenValidationResult.SecurityToken;
-            var userId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == ClaimTypes.Sid).Value);
+            var userId = int.Parse(jwtToken.Claims.First(claim => claim.Type == ClaimTypes.Sid).Value);
             return userId;
         }
         catch (Exception e)

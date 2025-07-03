@@ -1,4 +1,4 @@
-namespace Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+namespace ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
 
 /**
  * <summary>

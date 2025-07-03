@@ -1,7 +1,7 @@
-using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
 using BCryptNet = BCrypt.Net.BCrypt;
 
-namespace Q2.Web_Service.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Hashing.BCrypt.Services;
 
 /**
  * <summary>

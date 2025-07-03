@@ -1,10 +1,10 @@
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
-using Q2.Web_Service.API.IAM.Domain.Repositories;
-using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
-using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Repositories;
+using ACME.LearningCenterPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
+using ACME.LearningCenterPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Persistence.EFC.Repositories;
 
 /**
  * <summary>
@@ -16,18 +16,6 @@ namespace Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Repositories;
  */
 public class UserRepository(AppDbContext context) : BaseRepository<User>(context), IUserRepository
 {
-    /**
-     * <summary>
-     *     Find a user by id with Guid
-     * </summary>
-     * <param name="id">The user id to search</param>
-     * <returns>The user</returns>
-     */
-    public async Task<User?> FindByIdAsync(Guid id)
-    {
-        return await Context.Set<User>().FirstOrDefaultAsync(user => user.Id.Equals(id));
-    }
-
     /**
      * <summary>
      *     Find a user by username

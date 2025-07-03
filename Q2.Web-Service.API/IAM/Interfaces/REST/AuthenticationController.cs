@@ -1,16 +1,16 @@
 using System.Net.Mime;
-using Q2.Web_Service.API.IAM.Domain.Services;
-using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
-using Q2.Web_Service.API.IAM.Interfaces.REST.Resources;
-using Q2.Web_Service.API.IAM.Interfaces.REST.Transform;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Services;
+using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+using ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Resources;
+using ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Q2.Web_Service.API.IAM.Interfaces.REST;
+namespace ACME.LearningCenterPlatform.API.IAM.Interfaces.REST;
 
 [Authorize]
 [ApiController]
-[Route("api/v1/auth")]
+[Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available Authentication endpoints")]
 public class AuthenticationController(IUserCommandService userCommandService) : ControllerBase

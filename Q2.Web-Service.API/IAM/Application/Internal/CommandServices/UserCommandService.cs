@@ -1,11 +1,11 @@
-using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
-using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
-using Q2.Web_Service.API.IAM.Domain.Model.Commands;
-using Q2.Web_Service.API.IAM.Domain.Repositories;
-using Q2.Web_Service.API.IAM.Domain.Services;
-using Q2.Web_Service.API.Shared.Domain.Repositories;
+using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Commands;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Repositories;
+using ACME.LearningCenterPlatform.API.IAM.Domain.Services;
+using ACME.LearningCenterPlatform.API.Shared.Domain.Repositories;
 
-namespace Q2.Web_Service.API.IAM.Application.Internal.CommandServices;
+namespace ACME.LearningCenterPlatform.API.IAM.Application.Internal.CommandServices;
 
 /**
  * <summary>
