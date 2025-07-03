@@ -1,8 +1,8 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
 /**
  * This attribute is used to decorate controllers and actions that require authorization.

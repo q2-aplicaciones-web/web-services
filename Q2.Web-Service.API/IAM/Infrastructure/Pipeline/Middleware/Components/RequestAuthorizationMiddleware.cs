@@ -1,9 +1,9 @@
-using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Queries;
-using ACME.LearningCenterPlatform.API.IAM.Domain.Services;
-using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+using Q2.Web_Service.API.IAM.Domain.Model.Queries;
+using Q2.Web_Service.API.IAM.Domain.Services;
+using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Components;
 
 /**
  * RequestAuthorizationMiddleware is a custom middleware.

@@ -1,7 +1,7 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
 using Microsoft.EntityFrameworkCore;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Persistence.EFC.Configuration.Extensions;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 public static class ModelBuilderExtensions
 {

@@ -7,6 +7,15 @@ using Q2.Web_Service.API.DesignLab.Application.Internal.QueryServices;
 using Q2.Web_Service.API.DesignLab.Domain.Repositories;
 using Q2.Web_Service.API.DesignLab.Domain.Services;
 using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Repositories;
+using Q2.Web_Service.API.IAM.Application.Internal.CommandServices;
+using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+using Q2.Web_Service.API.IAM.Application.Internal.QueryServices;
+using Q2.Web_Service.API.IAM.Domain.Repositories;
+using Q2.Web_Service.API.IAM.Domain.Services;
+using Q2.Web_Service.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Services;
 using Q2.Web_Service.API.Shared.Domain.Repositories;
 using Q2.Web_Service.API.Shared.Infrastructure.ASP.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Mediator.Cortex.Configuration;
@@ -103,6 +112,14 @@ builder.Services.AddScoped<ILayerRepository, LayerRepository>();
 builder.Services.AddScoped<IProjectCommandService, ProjectCommandService>();
 builder.Services.AddScoped<IProjectQueryService, ProjectQueryService>();
 
+// IAM Bounded Context
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 // ProductCatalog Bounded Context
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
@@ -128,7 +145,41 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    
+    try
+    {
+        logger.LogInformation("Ensuring database is created and updated...");
+        
+        // Ensure database is created with all tables
+        var created = context.Database.EnsureCreated();
+        if (created)
+        {
+            logger.LogInformation("Database was created successfully");
+        }
+        else
+        {
+            logger.LogInformation("Database already exists");
+        }
+        
+        // Check if there are any pending migrations and apply them
+        var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+        if (pendingMigrations.Any())
+        {
+            logger.LogInformation($"Applying {pendingMigrations.Count} pending migrations...");
+            context.Database.Migrate();
+            logger.LogInformation("Migrations applied successfully");
+        }
+        else
+        {
+            logger.LogInformation("No pending migrations");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while creating/updating the database");
+        throw;
+    }
 }
 
 // Configure the HTTP request pipeline.

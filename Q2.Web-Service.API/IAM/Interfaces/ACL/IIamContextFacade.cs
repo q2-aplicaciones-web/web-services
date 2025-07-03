@@ -1,4 +1,4 @@
-namespace ACME.LearningCenterPlatform.API.IAM.Interfaces.ACL;
+namespace Q2.Web_Service.API.IAM.Interfaces.ACL;
 
 public interface IIamContextFacade
 {

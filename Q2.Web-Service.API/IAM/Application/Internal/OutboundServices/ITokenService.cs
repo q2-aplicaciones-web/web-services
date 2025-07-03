@@ -1,6 +1,6 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
+namespace Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
 
 /**
  * <summary>
