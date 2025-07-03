@@ -8,10 +8,10 @@ public class CreateTextLayerCommandFromResource
 {
     
     public static CreateTextLayerCommand ToCommandFromResource(
-        CreateTextLayerResource resource)
+        CreateTextLayerResource resource, Guid projectId)
     {
         return new CreateTextLayerCommand(
-            ProjectId.of(resource.ProjectId),
+            new ProjectId(projectId),
             resource.Text,
             resource.FontColor,
             resource.FontFamily,

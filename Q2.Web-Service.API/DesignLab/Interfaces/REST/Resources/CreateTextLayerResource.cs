@@ -3,8 +3,6 @@
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Resources;
 
 public record CreateTextLayerResource(
-    string ProjectId,
-    
     [Required(ErrorMessage = "Text cannot be null or empty")]
     [StringLength(500, ErrorMessage = "Text cannot exceed 500 characters")]
     string Text,

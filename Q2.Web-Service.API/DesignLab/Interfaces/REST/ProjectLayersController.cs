@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
 using Q2.Web_Service.API.DesignLab.Domain.Model.Queries;
-using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 using Q2.Web_Service.API.DesignLab.Domain.Services;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Resources;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
+using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/projects")]
+[Authorize]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available Project Layers Endpoints")]
 public class ProjectLayersController(
@@ -103,8 +103,7 @@ public class ProjectLayersController(
             }
 
             // Set project ID in resource
-            var updatedResource = resource with { ProjectId = projectId.ToString() };
-            var createTextLayerCommand = CreateTextLayerCommandFromResource.ToCommandFromResource(updatedResource);
+            var createTextLayerCommand = CreateTextLayerCommandFromResource.ToCommandFromResource(resource, projectId);
             var layerId = await layerCommandService.Handle(createTextLayerCommand);
 
             if (layerId is null)
