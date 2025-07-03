@@ -15,6 +15,15 @@ public interface IUserRepository : IBaseRepository<User>
 {
     /**
      * <summary>
+     *     Find a user by id with Guid
+     * </summary>
+     * <param name="id">The user id to search</param>
+     * <returns>The user</returns>
+     */
+    Task<User?> FindByIdAsync(Guid id);
+
+    /**
+     * <summary>
      *     Find a user by id
      * </summary>
      * <param name="username">The username to search</param>

@@ -11,7 +11,13 @@ public static class ModelBuilderExtensions
         
         builder.Entity<User>().HasKey(u => u.Id);
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<User>().Property(u => u.Username).IsRequired();
-        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+        builder.Entity<User>().Property(u => u.Username).IsRequired().HasMaxLength(50);
+        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired().HasMaxLength(255);
+        
+        // Create unique index on Username
+        builder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+        
+        // Configure table name
+        builder.Entity<User>().ToTable("users");
     }
 }

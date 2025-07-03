@@ -18,6 +18,18 @@ public class UserRepository(AppDbContext context) : BaseRepository<User>(context
 {
     /**
      * <summary>
+     *     Find a user by id with Guid
+     * </summary>
+     * <param name="id">The user id to search</param>
+     * <returns>The user</returns>
+     */
+    public async Task<User?> FindByIdAsync(Guid id)
+    {
+        return await Context.Set<User>().FirstOrDefaultAsync(user => user.Id.Equals(id));
+    }
+
+    /**
+     * <summary>
      *     Find a user by username
      * </summary>
      * <param name="username">The username to search</param>
