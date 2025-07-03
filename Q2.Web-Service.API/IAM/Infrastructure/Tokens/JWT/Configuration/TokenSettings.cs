@@ -1,4 +1,4 @@
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 
 /**
  * <summary>

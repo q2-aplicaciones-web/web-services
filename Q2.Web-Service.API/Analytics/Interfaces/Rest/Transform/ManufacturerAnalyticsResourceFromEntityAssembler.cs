@@ -1,5 +1,5 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Interfaces.Rest.Resources;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Interfaces.Rest.Resources;
 
 namespace Q2.Web_Service.API.Analytics.Interfaces.Rest.Transform;
 

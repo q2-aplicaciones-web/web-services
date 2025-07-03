@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects
+namespace Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.ValueObjects
 {
     [ComplexType]
     public class AnalyticsId : IEquatable<AnalyticsId>

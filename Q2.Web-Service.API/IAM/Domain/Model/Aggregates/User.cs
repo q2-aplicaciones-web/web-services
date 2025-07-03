@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
+namespace Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
 
 /**
  * <summary>

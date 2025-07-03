@@ -1,4 +1,4 @@
-using ACME.LearningCenterPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;

@@ -6,13 +6,11 @@ using Q2.Web_Service.API.DesignLab.Domain.Services;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Resources;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 using Swashbuckle.AspNetCore.Annotations;
-using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/projects")]
-[Authorize]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available Project Layers Endpoints")]
 public class ProjectLayersController(

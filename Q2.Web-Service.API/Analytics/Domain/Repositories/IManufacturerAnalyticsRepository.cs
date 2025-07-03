@@ -1,5 +1,5 @@
 using Q2.Web_Service.API.Shared.Domain.Repositories;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
 
 namespace Q2.Web_Service.API.Analytics.Domain.Repositories;
 

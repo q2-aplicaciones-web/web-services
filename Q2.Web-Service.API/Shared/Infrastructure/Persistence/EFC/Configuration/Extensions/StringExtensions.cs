@@ -1,6 +1,6 @@
 using Humanizer;
 
-namespace ACME.LearningCenterPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 /// <summary>
 ///     String extensions

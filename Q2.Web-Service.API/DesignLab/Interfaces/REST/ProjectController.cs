@@ -5,14 +5,12 @@ using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 using Q2.Web_Service.API.DesignLab.Domain.Services;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Resources;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
-using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/projects")]
-[Authorize]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Available Project Endpoints")]
 public class ProjectController(

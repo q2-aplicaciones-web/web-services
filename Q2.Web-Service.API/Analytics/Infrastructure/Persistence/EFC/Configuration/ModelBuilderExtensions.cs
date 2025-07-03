@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Aggregates;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Aggregates;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Configuration;
 

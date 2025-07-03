@@ -1,4 +1,4 @@
-namespace ACME.LearningCenterPlatform.API.IAM.Domain.Model.Queries;
+namespace Q2.Web_Service.API.IAM.Domain.Model.Queries;
 
 /**
  * <summary>

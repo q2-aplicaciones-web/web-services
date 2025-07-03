@@ -1,6 +1,6 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Aggregates;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Commands;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Aggregates;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Commands;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
 
 // [Service] // En C#, el registro del servicio se hace en la configuración de DI
 public class CustomerAnalyticsCommandServiceImpl

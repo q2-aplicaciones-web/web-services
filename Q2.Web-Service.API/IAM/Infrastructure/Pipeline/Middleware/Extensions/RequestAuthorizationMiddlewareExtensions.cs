@@ -1,6 +1,6 @@
-using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
+using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Components;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
 
 /**
  * RequestAuthorizationMiddlewareExtensions

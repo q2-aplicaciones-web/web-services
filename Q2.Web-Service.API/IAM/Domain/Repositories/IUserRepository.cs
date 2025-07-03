@@ -1,7 +1,8 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
-using ACME.LearningCenterPlatform.API.Shared.Domain.Repositories;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.Shared.Domain.Repositories;
+using User = Q2.Web_Service.API.IAM.Domain.Model.Aggregates.User;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Domain.Repositories;
+namespace Q2.Web_Service.API.IAM.Domain.Repositories;
 
 /**
  * <summary>

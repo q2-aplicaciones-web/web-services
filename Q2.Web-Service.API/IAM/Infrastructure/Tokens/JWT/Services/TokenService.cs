@@ -2,13 +2,14 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using System.Text;
-using ACME.LearningCenterPlatform.API.IAM.Application.Internal.OutboundServices;
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
-using ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using Q2.Web_Service.API.IAM.Application.Internal.OutboundServices;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using User = Q2.Web_Service.API.IAM.Domain.Model.Aggregates.User;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
+namespace Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Services;
 
 /**
  * <summary>

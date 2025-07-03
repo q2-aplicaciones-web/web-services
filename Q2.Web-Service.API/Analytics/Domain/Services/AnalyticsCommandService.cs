@@ -1,7 +1,7 @@
 // Q2.Web-Service.API/analytics/domain/services/AnalyticsCommandService.cs
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Services
+namespace Q2.Web_Service.Api.Teelab.Analytics.Domain.Services
 {
     /// <summary>
     /// Servicio de comandos para lógica de dominio de analytics.

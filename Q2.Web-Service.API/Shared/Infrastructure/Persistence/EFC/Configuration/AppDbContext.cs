@@ -1,11 +1,11 @@
+using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
-using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Configuration;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
 {

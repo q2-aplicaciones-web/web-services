@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.ValueObjects;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities
+namespace Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities
 {
     [Table("manufacturer_analytics")]
     public class ManufacturerAnalytics

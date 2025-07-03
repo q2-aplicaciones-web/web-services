@@ -1,5 +1,5 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Queries;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Queries;
 using Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories;
 
 namespace Q2.WebService.API.Analytics.Application.Internal.QueryServices

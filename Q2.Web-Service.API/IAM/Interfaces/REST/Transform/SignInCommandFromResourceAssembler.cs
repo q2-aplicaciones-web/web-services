@@ -1,7 +1,7 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Commands;
-using ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Resources;
+using Q2.Web_Service.API.IAM.Domain.Model.Commands;
+using Q2.Web_Service.API.IAM.Interfaces.REST.Resources;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Transform;
+namespace Q2.Web_Service.API.IAM.Interfaces.REST.Transform;
 
 public static class SignInCommandFromResourceAssembler
 {

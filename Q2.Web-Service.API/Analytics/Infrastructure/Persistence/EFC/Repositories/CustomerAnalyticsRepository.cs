@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 namespace Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories

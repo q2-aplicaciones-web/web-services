@@ -1,6 +1,6 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Aggregates;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Commands;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Aggregates;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Commands;
+using Q2.Web_Service.Api.Teelab.Analytics.Domain.Model.Entities;
 
 // Registrar este servicio en el contenedor de dependencias en Startup.cs o Program.cs
 public class ManufacturerAnalyticsCommandServiceImpl

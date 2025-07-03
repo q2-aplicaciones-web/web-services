@@ -1,7 +1,8 @@
-using ACME.LearningCenterPlatform.API.IAM.Domain.Model.Aggregates;
-using ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Resources;
+using Q2.Web_Service.API.IAM.Domain.Model.Aggregates;
+using Q2.Web_Service.API.IAM.Interfaces.REST.Resources;
+using User = Q2.Web_Service.API.IAM.Domain.Model.Aggregates.User;
 
-namespace ACME.LearningCenterPlatform.API.IAM.Interfaces.REST.Transform;
+namespace Q2.Web_Service.API.IAM.Interfaces.REST.Transform;
 
 public static class AuthenticatedUserResourceFromEntityAssembler
 {
