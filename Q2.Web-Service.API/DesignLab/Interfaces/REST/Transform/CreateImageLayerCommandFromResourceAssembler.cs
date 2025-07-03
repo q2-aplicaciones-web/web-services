@@ -12,7 +12,7 @@ public class CreateImageLayerCommandFromResourceAssembler
         return new CreateImageLayerCommand(
             ProjectId.of(resource.ProjectId),
             resource.ImageUrl,
-            resource.Width,
-            resource.Height);
+            int.Parse(resource.Width),
+            int.Parse(resource.Height));
     }
 }
