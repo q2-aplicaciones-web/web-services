@@ -18,7 +18,7 @@ public class CreateTextLayerCommandFromResource
             resource.FontSize,
             resource.IsBold,
             resource.IsItalic,
-            resource.IsUnderline
+            resource.IsUnderlined
             );
     }
 }

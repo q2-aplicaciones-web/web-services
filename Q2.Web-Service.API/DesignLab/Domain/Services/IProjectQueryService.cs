@@ -7,4 +7,5 @@ public interface IProjectQueryService
 {
     Task<IEnumerable<Project>> Handle(GetProjectsByUserIdQuery query);
     Task<Project?> Handle(GetProjectByIdQuery query);
+    Task<IEnumerable<Project>> Handle(GetAllProjectsQuery query);
 }
