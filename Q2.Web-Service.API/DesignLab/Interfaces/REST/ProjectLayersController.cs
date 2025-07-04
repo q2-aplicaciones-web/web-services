@@ -55,9 +55,7 @@ public class ProjectLayersController(
                     DateTime.UtcNow));
             }
 
-            // Update resource with project ID from route parameter
-            var updatedResource = resource with { ProjectId = projectId };
-            var createTextLayerCommand = CreateTextLayerCommandFromResource.ToCommandFromResource(updatedResource);
+            var createTextLayerCommand = CreateTextLayerCommandFromResource.ToCommandFromResource(resource, projectId);
             var layerId = await layerCommandService.Handle(createTextLayerCommand);
 
             if (layerId is null)
@@ -131,8 +129,7 @@ public class ProjectLayersController(
             }
 
             // Update resource with project ID from route parameter
-            var updatedResource = resource with { ProjectId = projectId };
-            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(updatedResource);
+            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(resource, projectId);
             var layerId = await layerCommandService.Handle(createImageLayerCommand);
 
             if (layerId is null)
@@ -237,4 +234,154 @@ public class ProjectLayersController(
                 DateTime.UtcNow));
         }
     }
-}   
+
+    /// <summary>
+    /// Update text layer details
+    /// </summary>
+    /// <param name="projectId">Project ID</param>
+    /// <param name="layerId">Layer ID</param>
+    /// <param name="resource">Text layer update data</param>
+    /// <returns>Updated text layer</returns>
+    [HttpPut("{projectId}/layers/{layerId}/text-details")]
+    [SwaggerOperation(
+        Summary = "Update Text Layer Details",
+        Description = "Updates the text properties of a text layer",
+        OperationId = "UpdateTextLayerDetails")]
+    [SwaggerResponse(200, "Text layer details updated successfully", typeof(LayerResource))]
+    [SwaggerResponse(400, "Invalid input data or layer is not a text layer", typeof(ErrorResource))]
+    [SwaggerResponse(404, "Project or layer not found", typeof(ErrorResource))]
+    [SwaggerResponse(403, "User not authorized", typeof(ErrorResource))]
+    [SwaggerResponse(500, "Internal server error", typeof(ErrorResource))]
+    public async Task<IActionResult> UpdateTextLayerDetails(
+        [FromRoute] Guid projectId,
+        [FromRoute] Guid layerId,
+        [FromBody] UpdateTextLayerResource resource)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return BadRequest(new ErrorResource(
+                    "Invalid input data",
+                    string.Join(", ", errors),
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            var updateTextLayerCommand = UpdateTextLayerCommandFromResourceAssembler.ToCommandFromResource(resource, layerId);
+            var updatedLayerId = await layerCommandService.Handle(updateTextLayerCommand);
+
+            if (updatedLayerId is null)
+            {
+                return BadRequest(new ErrorResource(
+                    "Failed to update text layer details",
+                    "UPDATE_FAILED",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            // Get the updated layer to return full details
+            var getLayerByIdQuery = new GetLayerByIdQuery(new LayerId(updatedLayerId.Id));
+            var layer = layerQueryService.Handle(getLayerByIdQuery);
+
+            if (layer is null)
+            {
+                return StatusCode(500, new ErrorResource(
+                    "Text layer updated but could not be retrieved",
+                    "RETRIEVAL_FAILED",
+                    500,
+                    DateTime.UtcNow));
+            }
+
+            var layerResource = LayerResourceFromEntityAssembler.FromEntity(layer);
+            return Ok(layerResource);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ErrorResource(
+                "An error occurred while updating the text layer",
+                ex.Message,
+                500,
+                DateTime.UtcNow));
+        }
+    }
+
+    /// <summary>
+    /// Update image layer details
+    /// </summary>
+    /// <param name="projectId">Project ID</param>
+    /// <param name="layerId">Layer ID</param>
+    /// <param name="resource">Image layer update data</param>
+    /// <returns>Updated image layer</returns>
+    [HttpPut("{projectId}/layers/{layerId}/image-details")]
+    [SwaggerOperation(
+        Summary = "Update Image Layer Details",
+        Description = "Updates the image properties of an image layer",
+        OperationId = "UpdateImageLayerDetails")]
+    [SwaggerResponse(200, "Image layer details updated successfully", typeof(LayerResource))]
+    [SwaggerResponse(400, "Invalid input data or layer is not an image layer", typeof(ErrorResource))]
+    [SwaggerResponse(404, "Project or layer not found", typeof(ErrorResource))]
+    [SwaggerResponse(403, "User not authorized", typeof(ErrorResource))]
+    [SwaggerResponse(500, "Internal server error", typeof(ErrorResource))]
+    public async Task<IActionResult> UpdateImageLayerDetails(
+        [FromRoute] Guid projectId,
+        [FromRoute] Guid layerId,
+        [FromBody] UpdateImageLayerResource resource)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return BadRequest(new ErrorResource(
+                    "Invalid input data",
+                    string.Join(", ", errors),
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            var updateImageLayerCommand = UpdateImageLayerCommandFromResourceAssembler.ToCommandFromResource(resource, layerId);
+            var updatedLayerId = await layerCommandService.Handle(updateImageLayerCommand);
+
+            if (updatedLayerId is null)
+            {
+                return BadRequest(new ErrorResource(
+                    "Failed to update image layer details",
+                    "UPDATE_FAILED",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            // Get the updated layer to return full details
+            var getLayerByIdQuery = new GetLayerByIdQuery(new LayerId(updatedLayerId.Id));
+            var layer = layerQueryService.Handle(getLayerByIdQuery);
+
+            if (layer is null)
+            {
+                return StatusCode(500, new ErrorResource(
+                    "Image layer updated but could not be retrieved",
+                    "RETRIEVAL_FAILED",
+                    500,
+                    DateTime.UtcNow));
+            }
+
+            var layerResource = LayerResourceFromEntityAssembler.FromEntity(layer);
+            return Ok(layerResource);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ErrorResource(
+                "An error occurred while updating the image layer",
+                ex.Message,
+                500,
+                DateTime.UtcNow));
+        }
+    }
+}
