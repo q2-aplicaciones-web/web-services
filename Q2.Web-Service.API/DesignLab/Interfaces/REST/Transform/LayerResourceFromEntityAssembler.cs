@@ -6,33 +6,33 @@ namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 
 public class LayerResourceFromEntityAssembler
 {
-    
     public static LayerResource FromEntity(Layer entity)
     {
-        Dictionary<string, object> Details = new Dictionary<string, object>
-        {
-            { "ProjectId", entity.ProjectId.Id }
-        };
+        var details = new Dictionary<string, object>();
+        
         if (entity.LayerType == ELayerType.Image)
         {
-            // Cast the entity to ImageLayer to access specific properties
             var imageLayer = entity as ImageLayer;
-            
-            // Add all the properties that are specific to Image Layer
-            Details.Add("ImageUrl", imageLayer.ImageUrl); // Placeholder for actual image URL
-            Details.Add("Width", imageLayer.Width);
-            Details.Add("Height", imageLayer.Height);
-        } else if (entity.LayerType == ELayerType.Text)
+            if (imageLayer != null)
+            {
+                details.Add("imageUrl", imageLayer.ImageUrl.ToString());
+                details.Add("width", imageLayer.Width);
+                details.Add("height", imageLayer.Height);
+            }
+        } 
+        else if (entity.LayerType == ELayerType.Text)
         {
             var textLayer = entity as TextLayer;
-            // Add all the properties that are specific to Text Layer
-            Details.Add("TextContent", textLayer.Text);
-            Details.Add("FontColor", textLayer.FontColor);
-            Details.Add("FontFamily", textLayer.FontFamily);
-            Details.Add("FontSize", textLayer.FontSize);
-            Details.Add("IsBold", textLayer.IsBold);
-            Details.Add("IsItalic", textLayer.IsItalic);
-            Details.Add("IsUnderlined", textLayer.IsUnderline);
+            if (textLayer != null)
+            {
+                details.Add("text", textLayer.Text);
+                details.Add("fontColor", textLayer.FontColor);
+                details.Add("fontFamily", textLayer.FontFamily);
+                details.Add("fontSize", textLayer.FontSize);
+                details.Add("isBold", textLayer.IsBold);
+                details.Add("isItalic", textLayer.IsItalic);
+                details.Add("isUnderlined", textLayer.IsUnderline);
+            }
         }
 
         return new LayerResource(
@@ -42,11 +42,10 @@ public class LayerResourceFromEntityAssembler
             entity.Z,
             entity.Opacity,
             entity.IsVisible,
-            entity.LayerType.ToString(),
-            entity.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-            entity.UpdatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-            Details
+            entity.LayerType.ToString().ToUpper(),
+            entity.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+            entity.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+            details
         );
-
     }
 }
