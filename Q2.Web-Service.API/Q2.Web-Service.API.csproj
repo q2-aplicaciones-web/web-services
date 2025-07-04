@@ -32,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="OrdersProcessing\Domain\Model\ValueObjects\" />
       <Folder Include="Shared\Infrastructure\Interfaces\" />
     </ItemGroup>
 
