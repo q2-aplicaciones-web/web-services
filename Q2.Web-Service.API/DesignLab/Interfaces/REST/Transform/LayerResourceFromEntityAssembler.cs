@@ -42,9 +42,9 @@ public class LayerResourceFromEntityAssembler
             entity.Z,
             entity.Opacity,
             entity.IsVisible,
-            entity.LayerType,
-            entity.CreatedAt.ToString(),
-            entity.UpdatedAt.ToString(),
+            entity.LayerType.ToString(),
+            entity.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+            entity.UpdatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
             Details
         );
 

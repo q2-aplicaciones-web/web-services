@@ -8,20 +8,23 @@ public class ProjectResourceFromEntityAssembler
 {
     public static ProjectResource toResourceFromEntity(Project project)
     {
-        var layers = (project.Layers ?? (ICollection<Layer>)new List<Layer>()).Select(LayerResourceFromEntityAssembler.FromEntity).ToList();
+        var layers = (project.Layers ?? (ICollection<Layer>)new List<Layer>())
+            .Select(LayerResourceFromEntityAssembler.FromEntity)
+            .ToList();
+            
         return new ProjectResource
         (
             project.Id.Id,
             project.Title,
             project.UserId.Id,
             project.PreviewUrl?.ToString() ?? string.Empty,
-            project.Status,
-            project.Color,
-            project.Size,
-            project.Gender,
+            project.Status.ToString(),
+            project.Color.ToString(),
+            project.Size.ToString(),
+            project.Gender.ToString(),
             layers,
-            project.CreatedAt.ToString(),
-            project.UpdatedAt.ToString()
+            project.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+            project.UpdatedAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
         );
     }
 }
