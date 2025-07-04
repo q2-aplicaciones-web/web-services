@@ -6,13 +6,13 @@ namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 
 public class CreateImageLayerCommandFromResourceAssembler
 {
-    public static CreateImageLayerCommand ToCommandFromResource(
-        CreateImageLayerResource resource)
+    public static CreateImageLayerCommand ToCommandFromResource(CreateImageLayerResource resource)
     {
         return new CreateImageLayerCommand(
-            ProjectId.of(resource.ProjectId),
+            new ProjectId(resource.ProjectId),
             resource.ImageUrl,
-            int.Parse(resource.Width),
-            int.Parse(resource.Height));
+            resource.Width,
+            resource.Height
+        );
     }
 }

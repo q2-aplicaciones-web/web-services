@@ -6,12 +6,10 @@ namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 
 public class CreateTextLayerCommandFromResource
 {
-    
-    public static CreateTextLayerCommand ToCommandFromResource(
-        CreateTextLayerResource resource)
+    public static CreateTextLayerCommand ToCommandFromResource(CreateTextLayerResource resource)
     {
         return new CreateTextLayerCommand(
-            ProjectId.of(resource.ProjectId),
+            new ProjectId(resource.ProjectId),
             resource.Text,
             resource.FontColor,
             resource.FontFamily,
@@ -19,6 +17,6 @@ public class CreateTextLayerCommandFromResource
             resource.IsBold,
             resource.IsItalic,
             resource.IsUnderlined
-            );
+        );
     }
 }
