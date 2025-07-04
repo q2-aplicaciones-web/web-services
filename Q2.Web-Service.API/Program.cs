@@ -116,6 +116,8 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ILayerRepository, LayerRepository>();
 builder.Services.AddScoped<IProjectCommandService, ProjectCommandService>();
 builder.Services.AddScoped<IProjectQueryService, ProjectQueryService>();
+builder.Services.AddScoped<ILayerCommandService, LayerCommandService>();
+builder.Services.AddScoped<ILayerQueryService, LayerQueryService>();
 
 // IAM Bounded Context
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
@@ -150,7 +152,7 @@ builder.Services.AddCortexMediator(
 
 var app = builder.Build();
 
-// Verify if the database exists and create it if it doesn't
+// Ensure database exists and create it if it doesn't
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -159,35 +161,44 @@ using (var scope = app.Services.CreateScope())
     
     try
     {
-        logger.LogInformation("Ensuring database is created and updated...");
+        logger.LogInformation("Checking if database exists...");
         
-        // Ensure database is created with all tables
-        var created = context.Database.EnsureCreated();
-        if (created)
+        // Check if database can be connected to
+        var canConnect = context.Database.CanConnect();
+        if (!canConnect)
         {
-            logger.LogInformation("Database was created successfully");
+            logger.LogInformation("Database does not exist. Creating database...");
+            var created = context.Database.EnsureCreated();
+            if (created)
+            {
+                logger.LogInformation("Database was created successfully");
+            }
+            else
+            {
+                logger.LogWarning("Database creation returned false - database may already exist");
+            }
         }
         else
         {
             logger.LogInformation("Database already exists");
-        }
-        
-        // Check if there are any pending migrations and apply them
-        var pendingMigrations = context.Database.GetPendingMigrations().ToList();
-        if (pendingMigrations.Any())
-        {
-            logger.LogInformation($"Applying {pendingMigrations.Count} pending migrations...");
-            context.Database.Migrate();
-            logger.LogInformation("Migrations applied successfully");
-        }
-        else
-        {
-            logger.LogInformation("No pending migrations");
+            
+            // Check if there are any pending migrations and apply them
+            var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+            if (pendingMigrations.Any())
+            {
+                logger.LogInformation($"Applying {pendingMigrations.Count} pending migrations...");
+                context.Database.Migrate();
+                logger.LogInformation("Migrations applied successfully");
+            }
+            else
+            {
+                logger.LogInformation("No pending migrations");
+            }
         }
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "An error occurred while creating/updating the database");
+        logger.LogError(ex, "An error occurred while ensuring database exists");
         throw;
     }
 }

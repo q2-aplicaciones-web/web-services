@@ -8,19 +8,28 @@ public class CreateProjectCommandFromResourceAssembler
 {
     public static CreateProjectCommand ToCommandFromResource(CreateProjectResource resource)
     {
-        try
+        // Validate and parse enum values with proper error handling
+        if (!Enum.TryParse<EGarmentColor>(resource.GarmentColor, true, out var garmentColor))
         {
-            return new CreateProjectCommand(
-                new UserId(Guid.Parse(resource.UserId)),
-                resource.Title,
-                Enum.Parse<EGarmentColor>(resource.GarmentColor, true),
-                Enum.Parse<EGarmentGender>(resource.GarmentGender, true),
-                Enum.Parse<EGarmentSize>(resource.GarmentSize, true)
-            );
+            throw new ArgumentException($"Invalid garment color: {resource.GarmentColor}. Valid values are: {string.Join(", ", Enum.GetNames<EGarmentColor>())}");
         }
-        catch (ArgumentException ex) when (ex.Message.Contains("was not found"))
+
+        if (!Enum.TryParse<EGarmentGender>(resource.GarmentGender, true, out var garmentGender))
         {
-            throw new ArgumentException($"Invalid enum value provided. {ex.Message}", ex);
+            throw new ArgumentException($"Invalid garment gender: {resource.GarmentGender}. Valid values are: {string.Join(", ", Enum.GetNames<EGarmentGender>())}");
         }
+
+        if (!Enum.TryParse<EGarmentSize>(resource.GarmentSize, true, out var garmentSize))
+        {
+            throw new ArgumentException($"Invalid garment size: {resource.GarmentSize}. Valid values are: {string.Join(", ", Enum.GetNames<EGarmentSize>())}");
+        }
+
+        return new CreateProjectCommand(
+            new UserId(resource.UserId),
+            resource.Title,
+            garmentColor,
+            garmentGender,
+            garmentSize
+        );
     }
 }

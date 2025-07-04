@@ -51,4 +51,44 @@ public class LayerCommandService(ILayerRepository layerRepository, IProjectRepos
         return layer.Id;
     }
 
+    public async Task<LayerId?> Handle(UpdateTextLayerCommand command)
+    {
+        var layer = await layerRepository.GetByIdAsync(command.LayerId);
+        if (layer == null)
+        {
+            throw new ArgumentException("Layer not found", nameof(command.LayerId));
+        }
+
+        if (layer is not TextLayer textLayer)
+        {
+            throw new ArgumentException("Layer is not a text layer", nameof(command.LayerId));
+        }
+
+        textLayer.UpdateDetails(command);
+        await layerRepository.UpdateAsync(textLayer);
+        await unitOfWork.CompleteAsync();
+
+        return textLayer.Id;
+    }
+
+    public async Task<LayerId?> Handle(UpdateImageLayerCommand command)
+    {
+        var layer = await layerRepository.GetByIdAsync(command.LayerId);
+        if (layer == null)
+        {
+            throw new ArgumentException("Layer not found", nameof(command.LayerId));
+        }
+
+        if (layer is not ImageLayer imageLayer)
+        {
+            throw new ArgumentException("Layer is not an image layer", nameof(command.LayerId));
+        }
+
+        imageLayer.UpdateDetails(command);
+        await layerRepository.UpdateAsync(imageLayer);
+        await unitOfWork.CompleteAsync();
+
+        return imageLayer.Id;
+    }
+
 }

@@ -3,7 +3,7 @@ using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
 
-public class Layer
+public abstract class Layer
 {
     public LayerId Id { get; private set; }
     public ProjectId ProjectId { get; private set; }
@@ -18,7 +18,11 @@ public class Layer
     public DateTime UpdatedAt { get; private set; }
 
     // Constructor protegido requerido por EF Core
-    protected Layer() { }
+    protected Layer() 
+    {
+        Id = null!; // Will be set by EF Core
+        ProjectId = null!; // Will be set by EF Core
+    }
 
     public Layer(CreateTextLayerCommand command)
     {

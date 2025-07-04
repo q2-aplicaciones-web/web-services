@@ -1,15 +1,15 @@
-﻿using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
+using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
 using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 using Q2.Web_Service.API.DesignLab.Interfaces.REST.Resources;
 
 namespace Q2.Web_Service.API.DesignLab.Interfaces.REST.Transform;
 
-public class CreateTextLayerCommandFromResource
+public class UpdateTextLayerCommandFromResourceAssembler
 {
-    public static CreateTextLayerCommand ToCommandFromResource(CreateTextLayerResource resource, Guid projectId)
+    public static UpdateTextLayerCommand ToCommandFromResource(UpdateTextLayerResource resource, Guid layerId)
     {
-        return new CreateTextLayerCommand(
-            new ProjectId(projectId),
+        return new UpdateTextLayerCommand(
+            new LayerId(layerId),
             resource.Text,
             resource.FontColor,
             resource.FontFamily,
