@@ -7,5 +7,7 @@ public interface ILayerCommandService
 {
     Task<LayerId?> Handle(CreateTextLayerCommand command);
     Task<LayerId?> Handle(CreateImageLayerCommand command);
+    Task<LayerId?> Handle(UpdateTextLayerCommand command);
+    Task<LayerId?> Handle(UpdateImageLayerCommand command);
     Task<LayerId?> Handle(DeleteProjectLayerCommand command);
 }

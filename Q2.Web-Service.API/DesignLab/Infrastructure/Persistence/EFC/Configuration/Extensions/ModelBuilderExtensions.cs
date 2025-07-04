@@ -69,6 +69,11 @@ public static class ModelBuilderExtensions
         var entity = builder.Entity<Layer>();
         entity.HasKey(l => l.Id);
 
+        // Configure inheritance - Table Per Hierarchy (TPH)
+        entity.HasDiscriminator<ELayerType>("LayerType")
+            .HasValue<TextLayer>(ELayerType.Text)
+            .HasValue<ImageLayer>(ELayerType.Image);
+
         entity.Property(l => l.Id)
             .IsRequired()
             .ValueGeneratedOnAdd()
@@ -98,5 +103,25 @@ public static class ModelBuilderExtensions
         entity.Property(l => l.UpdatedAt)
             .IsRequired()
             .ValueGeneratedOnAddOrUpdate();
+
+        // Configure TextLayer specific properties
+        builder.Entity<TextLayer>(textEntity =>
+        {
+            textEntity.Property(t => t.Text).IsRequired();
+            textEntity.Property(t => t.FontColor).IsRequired();
+            textEntity.Property(t => t.FontFamily).IsRequired();
+            textEntity.Property(t => t.FontSize).IsRequired();
+            textEntity.Property(t => t.IsBold).IsRequired();
+            textEntity.Property(t => t.IsItalic).IsRequired();
+            textEntity.Property(t => t.IsUnderline).IsRequired();
+        });
+
+        // Configure ImageLayer specific properties
+        builder.Entity<ImageLayer>(imageEntity =>
+        {
+            imageEntity.Property(i => i.ImageUrl).IsRequired();
+            imageEntity.Property(i => i.Width).IsRequired();
+            imageEntity.Property(i => i.Height).IsRequired();
+        });
     }
 }
