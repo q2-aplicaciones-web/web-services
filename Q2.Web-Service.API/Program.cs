@@ -16,6 +16,11 @@ using Q2.Web_Service.API.IAM.Infrastructure.Hashing.BCrypt.Services;
 using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Repositories;
 using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Q2.Web_Service.API.IAM.Infrastructure.Tokens.JWT.Services;
+using Q2.Web_Service.API.OrdersProcessing.Application.Internal.CommandServices;
+using Q2.Web_Service.API.OrdersProcessing.Application.Internal.QueryServices;
+using Q2.Web_Service.API.OrdersProcessing.Domain.Repositories;
+using Q2.Web_Service.API.OrdersProcessing.Domain.Services;
+using Q2.Web_Service.API.OrdersProcessing.Infrastructure.Persistence.EFC.Repositories;
 using Q2.Web_Service.API.Shared.Domain.Repositories;
 using Q2.Web_Service.API.Shared.Infrastructure.ASP.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Mediator.Cortex.Configuration;
@@ -122,6 +127,11 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 // ProductCatalog Bounded Context
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// OrdersProcessing Bounded Context
+builder.Services.AddScoped<IOrderProcessingRepository, OrderProcessingRepository>();
+builder.Services.AddScoped<IOrderProcessingCommandService, OrderProcessingCommandService>();
+builder.Services.AddScoped<IOrderProcessingQueryService, OrderProcessingQueryService>();
 
 // Analytics Bounded Context - TODO: Fix namespaces in repository implementations
 // builder.Services.AddScoped<ICustomerAnalyticsRepository, CustomerAnalyticsRepository>();

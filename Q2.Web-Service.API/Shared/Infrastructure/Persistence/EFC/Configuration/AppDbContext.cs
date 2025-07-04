@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Q2.Web_Service.API.DesignLab.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Q2.Web_Service.API.IAM.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Q2.Web_Service.API.OrdersProcessing.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Configuration;
 using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
@@ -30,6 +31,7 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
             builder.ApplyAnalyticsConfiguration();
             builder.ApplyDesignLabConfiguration();
             builder.ApplyIamConfiguration();
+            builder.ApplyOrdersProcessingConfiguration();
 
             // Configuración para CustomerAnalytics
             builder.Entity<CustomerAnalytics>()
