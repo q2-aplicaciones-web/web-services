@@ -55,45 +55,8 @@ public class ProjectLayersController(
                     DateTime.UtcNow));
             }
 
-            // Validate required fields
-            if (string.IsNullOrWhiteSpace(resource.Text))
-            {
-                return BadRequest(new ErrorResource(
-                    "Text cannot be null or empty",
-                    "INVALID_TEXT",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (string.IsNullOrWhiteSpace(resource.FontColor))
-            {
-                return BadRequest(new ErrorResource(
-                    "Font color cannot be null or empty",
-                    "INVALID_FONT_COLOR",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (string.IsNullOrWhiteSpace(resource.FontFamily))
-            {
-                return BadRequest(new ErrorResource(
-                    "Font family cannot be null or empty",
-                    "INVALID_FONT_FAMILY",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (resource.FontSize <= 0)
-            {
-                return BadRequest(new ErrorResource(
-                    "Font size must be a positive number",
-                    "INVALID_FONT_SIZE",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            // Set project ID in resource
-            var updatedResource = resource with { ProjectId = projectId.ToString() };
+            // Update resource with project ID from route parameter
+            var updatedResource = resource with { ProjectId = projectId };
             var createTextLayerCommand = CreateTextLayerCommandFromResource.ToCommandFromResource(updatedResource);
             var layerId = await layerCommandService.Handle(createTextLayerCommand);
 
@@ -167,54 +130,9 @@ public class ProjectLayersController(
                     DateTime.UtcNow));
             }
 
-            // Validate required fields
-            if (string.IsNullOrWhiteSpace(resource.ImageUrl))
-            {
-                return BadRequest(new ErrorResource(
-                    "Image URL cannot be null or empty",
-                    "INVALID_IMAGE_URL",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (string.IsNullOrWhiteSpace(resource.Width))
-            {
-                return BadRequest(new ErrorResource(
-                    "Width cannot be null or empty",
-                    "INVALID_WIDTH",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (string.IsNullOrWhiteSpace(resource.Height))
-            {
-                return BadRequest(new ErrorResource(
-                    "Height cannot be null or empty",
-                    "INVALID_HEIGHT",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            // Validate that width and height are positive numbers
-            if (!double.TryParse(resource.Width, out var widthValue) || widthValue <= 0)
-            {
-                return BadRequest(new ErrorResource(
-                    "Width must be a positive number",
-                    "INVALID_WIDTH_VALUE",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            if (!double.TryParse(resource.Height, out var heightValue) || heightValue <= 0)
-            {
-                return BadRequest(new ErrorResource(
-                    "Height must be a positive number",
-                    "INVALID_HEIGHT_VALUE",
-                    400,
-                    DateTime.UtcNow));
-            }
-
-            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(resource);
+            // Update resource with project ID from route parameter
+            var updatedResource = resource with { ProjectId = projectId };
+            var createImageLayerCommand = CreateImageLayerCommandFromResourceAssembler.ToCommandFromResource(updatedResource);
             var layerId = await layerCommandService.Handle(createImageLayerCommand);
 
             if (layerId is null)

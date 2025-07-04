@@ -148,32 +148,43 @@ public class ProjectController(
                     DateTime.UtcNow));
             }
 
-            var createProjectCommand = CreateProjectCommandFromResourceAssembler.ToCommandFromResource(resource);
-            var projectId = await projectCommandService.Handle(createProjectCommand);
+            try
+            {
+                var createProjectCommand = CreateProjectCommandFromResourceAssembler.ToCommandFromResource(resource);
+                var projectId = await projectCommandService.Handle(createProjectCommand);
 
-            if (projectId is null)
+                if (projectId is null)
+                {
+                    return BadRequest(new ErrorResource(
+                        "Failed to create project",
+                        "CREATION_FAILED",
+                        400,
+                        DateTime.UtcNow));
+                }
+
+                var getProjectByIdQuery = new GetProjectByIdQuery(projectId.Id);
+                var project = await projectQueryService.Handle(getProjectByIdQuery);
+
+                if (project is null)
+                {
+                    return StatusCode(500, new ErrorResource(
+                        "Project created but could not be retrieved",
+                        "RETRIEVAL_FAILED",
+                        500,
+                        DateTime.UtcNow));
+                }
+
+                var projectResource = ProjectResourceFromEntityAssembler.toResourceFromEntity(project);
+                return CreatedAtAction(nameof(GetProjectById), new { projectId = projectId.Id }, projectResource);
+            }
+            catch (ArgumentException argEx)
             {
                 return BadRequest(new ErrorResource(
-                    "Failed to create project",
-                    "CREATION_FAILED",
+                    "Invalid enum value provided",
+                    argEx.Message,
                     400,
                     DateTime.UtcNow));
             }
-
-            var getProjectByIdQuery = new GetProjectByIdQuery(projectId.Id);
-            var project = await projectQueryService.Handle(getProjectByIdQuery);
-
-            if (project is null)
-            {
-                return StatusCode(500, new ErrorResource(
-                    "Project created but could not be retrieved",
-                    "RETRIEVAL_FAILED",
-                    500,
-                    DateTime.UtcNow));
-            }
-
-            var projectResource = ProjectResourceFromEntityAssembler.toResourceFromEntity(project);
-            return CreatedAtAction(nameof(GetProjectById), new { projectId = projectId.Id }, projectResource);
         }
         catch (Exception ex)
         {
