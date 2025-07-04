@@ -21,8 +21,8 @@ public record LayerResource(
     [SwaggerParameter("Whether the layer is visible")]
     bool IsVisible,
     
-    [SwaggerParameter("Layer type (Image, Text)")]
-    string LayerType,
+    [SwaggerParameter("Layer type (TEXT, IMAGE)")]
+    string Type,
     
     [SwaggerParameter("Creation timestamp")]
     string CreatedAt,
@@ -30,6 +30,6 @@ public record LayerResource(
     [SwaggerParameter("Last update timestamp")]
     string UpdatedAt,
     
-    [SwaggerParameter("Additional layer-specific properties")]
+    [SwaggerParameter("Layer-specific properties based on type")]
     Dictionary<string, object> Details
 );
