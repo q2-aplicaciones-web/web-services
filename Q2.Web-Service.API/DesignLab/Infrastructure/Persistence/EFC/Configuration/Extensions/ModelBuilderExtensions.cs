@@ -16,6 +16,7 @@ public static class ModelBuilderExtensions
     private static void ConfigureProject(ModelBuilder builder)
     {
         var entity = builder.Entity<Project>();
+        entity.ToTable("Projects");
         entity.HasKey(p => p.Id);
 
         entity.Property(p => p.Id)
@@ -67,6 +68,7 @@ public static class ModelBuilderExtensions
     private static void ConfigureLayer(ModelBuilder builder)
     {
         var entity = builder.Entity<Layer>();
+        entity.ToTable("Layers");
         entity.HasKey(l => l.Id);
 
         // Configure inheritance - Table Per Hierarchy (TPH)
@@ -119,7 +121,12 @@ public static class ModelBuilderExtensions
         // Configure ImageLayer specific properties
         builder.Entity<ImageLayer>(imageEntity =>
         {
-            imageEntity.Property(i => i.ImageUrl).IsRequired();
+            imageEntity.Property(i => i.ImageUrl)
+                .IsRequired()
+                .HasConversion(
+                    uri => uri.ToString(),
+                    str => new Uri(str)
+                );
             imageEntity.Property(i => i.Width).IsRequired();
             imageEntity.Property(i => i.Height).IsRequired();
         });
