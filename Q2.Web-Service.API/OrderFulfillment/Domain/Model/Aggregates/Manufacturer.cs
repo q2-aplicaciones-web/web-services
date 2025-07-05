@@ -55,6 +55,7 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
 
         public Fulfillment CreateFulfillment(OrderId orderId, FulfillmentStatus status)
         {
+            // Usa el constructor de 5 parámetros para evitar ambigüedad
             var fulfillment = new Fulfillment(orderId, status, null, null, this);
             return fulfillment;
         }

@@ -55,5 +55,22 @@ namespace Q2.Web_Service.API.OrderFulfillment.Application.Internal.Commandservic
 
             return fulfillment.Id;
         }
+        public void MarkAsShipped(Guid fulfillmentId)
+        {
+            var fulfillment = _fulfillmentRepository.FindById(fulfillmentId);
+            if (fulfillment == null)
+                throw new InvalidOperationException("Fulfillment not found.");
+            fulfillment.MarkAsShipped();
+            _fulfillmentRepository.Save(fulfillment);
+        }
+
+        public void MarkAsReceived(Guid fulfillmentId)
+        {
+            var fulfillment = _fulfillmentRepository.FindById(fulfillmentId);
+            if (fulfillment == null)
+                throw new InvalidOperationException("Fulfillment not found.");
+            fulfillment.MarkAsReceived();
+            _fulfillmentRepository.Save(fulfillment);
+        }
     }
 }

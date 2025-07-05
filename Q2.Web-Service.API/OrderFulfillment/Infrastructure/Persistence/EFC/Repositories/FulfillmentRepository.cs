@@ -44,10 +44,12 @@ public class FulfillmentRepository : IFulfillmentRepository
         var existing = _context.Fulfillments.Find(fulfillment.Id);
         if (existing == null)
         {
+            fulfillment.CreatedAt = DateTime.UtcNow;
             _context.Fulfillments.Add(fulfillment);
         }
         else
         {
+            fulfillment.UpdatedAt = DateTime.UtcNow;
             _context.Entry(existing).CurrentValues.SetValues(fulfillment);
         }
         _context.SaveChanges();

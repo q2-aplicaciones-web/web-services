@@ -9,6 +9,26 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
 {
     public class Fulfillment : AuditableAbstractAggregateRoot<Fulfillment>
     {
+        // Elimina el constructor ambiguo, usa el de 5 parámetros en Manufacturer
+        // Marca el fulfillment como enviado y actualiza la fecha
+        public void MarkAsShipped()
+        {
+            if (Status != FulfillmentStatus.PENDING && Status != FulfillmentStatus.PROCESSING)
+                throw new InvalidOperationException("Solo se puede marcar como enviado si está en estado PENDING o PROCESSING.");
+            Status = FulfillmentStatus.SHIPPED;
+            ShippedDate = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        // Marca el fulfillment como recibido y actualiza la fecha
+        public void MarkAsReceived()
+        {
+            if (Status != FulfillmentStatus.SHIPPED)
+                throw new InvalidOperationException("Solo se puede marcar como recibido si está en estado SHIPPED.");
+            Status = FulfillmentStatus.DELIVERED;
+            ReceivedDate = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
         public OrderId OrderId { get; private set; }
         public FulfillmentStatus Status { get; private set; }
         public DateTime? ReceivedDate { get; private set; }
@@ -44,6 +64,7 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
             Manufacturer = manufacturer;
             ManufacturerId = manufacturer?.Id;
             manufacturer?.AddFulfillment(this);
+            CreatedAt = DateTime.UtcNow;
         }
 
         public Fulfillment(CreateFulfillmentCommand command)
@@ -54,6 +75,7 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
             ShippedDate = null;
             Manufacturer = null;
             ManufacturerId = null;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public void UpdateStatus(FulfillmentStatus status)

@@ -66,5 +66,40 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             var fulfillmentResource = FulfillmentResourceFromEntityAssembler.ToResourceFromEntity(fulfillment);
             return CreatedAtAction(nameof(GetFulfillmentById), new { fulfillmentId = fulfillmentResource.Id }, fulfillmentResource);
         }
+        [HttpPost("{fulfillmentId}/ship")]
+        public IActionResult MarkAsShipped(Guid fulfillmentId)
+        {
+            try
+            {
+                _fulfillmentCommandService.MarkAsShipped(fulfillmentId);
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpPost("{fulfillmentId}/receive")]
+        public IActionResult MarkAsReceived(Guid fulfillmentId)
+        {
+            try
+            {
+                _fulfillmentCommandService.MarkAsReceived(fulfillmentId);
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
     }
 }
