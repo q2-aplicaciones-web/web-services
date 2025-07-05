@@ -141,6 +141,8 @@ builder.Services.AddScoped<IOrderProcessingQueryService, OrderProcessingQuerySer
 // Mediator Configuration
 builder.Services.AddScoped(typeof(ICommandPipelineBehavior<>), typeof(LogginCommandBehavior<>));
 // ProductCatalog Bounded Context
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.repositories.IProductLikeRepository, Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.repositories.ProductLikeRepository>();
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Domain.Services.IProductLikeService, Q2.Web_Service.API.ProductCatalog.Application.Internal.CommandServices.ProductLikeServiceImpl>();
 builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Domain.Services.IProductCommandService, Q2.Web_Service.API.ProductCatalog.Application.Internal.CommandServices.ProductCommandServiceImpl>();
 builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories.IProductRepository, Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories.ProductRepository>();
 builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Domain.Services.IProductQueryService, Q2.Web_Service.API.ProductCatalog.Application.Internal.QueryServices.ProductQueryServiceImpl>();

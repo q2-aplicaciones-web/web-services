@@ -25,7 +25,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Transform
                 entity.Status.ToString(),
                 entity.ProjectTitle,
                 entity.ProjectPreviewUrl,
-                entity.ProjectUserId,
+                entity.UserId,
                 entity.LikeCount,
                 // Elimina CreatedAt y UpdatedAt si no existen en el modelo
                 default,

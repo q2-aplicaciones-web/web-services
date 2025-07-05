@@ -10,15 +10,17 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources
 public class CreateProductResource
 {
     public string? ProjectId { get; set; }
+    public Guid UserId { get; set; }
     public decimal PriceAmount { get; set; }
     public string? PriceCurrency { get; set; }
     public string? Status { get; set; }
 
     public CreateProductResource() { }
 
-    public CreateProductResource(string projectId, decimal priceAmount, string priceCurrency, string? status)
+    public CreateProductResource(string projectId, Guid userId, decimal priceAmount, string priceCurrency, string? status)
     {
         ProjectId = projectId;
+        UserId = userId;
         PriceAmount = priceAmount;
         PriceCurrency = priceCurrency;
         Status = status;

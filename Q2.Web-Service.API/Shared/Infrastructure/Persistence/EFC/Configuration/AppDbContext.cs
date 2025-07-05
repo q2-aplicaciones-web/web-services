@@ -15,7 +15,7 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
     /// </summary>
     public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
-
+        public DbSet<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.ProductLike> ProductLikes { get; set; }
         // Agrega automáticamente las fechas CreatedAt y UpdatedAt (si estás usando un interceptor)
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -62,11 +62,20 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
                     m.HasKey("Id");
                 });
 
+            // Configuración para ProductLike
+            builder.Entity<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.ProductLike>(entity =>
+            {
+                entity.ToTable("product_likes");
+                entity.HasKey(e => new { e.ProductId, e.UserId });
+                entity.Property(e => e.ProductId).HasColumnName("product_id");
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+            });
+
             // Convención opcional de nombres en snake_case si has definido la extensión
             builder.UseSnakeCaseNamingConvention(); // Asegúrate de tener implementada esta extensión
         }
 
         public DbSet<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.Product> Products { get; set; }
-
+        // ...existing code...
     }
 }

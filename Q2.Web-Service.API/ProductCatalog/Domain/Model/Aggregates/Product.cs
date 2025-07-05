@@ -13,7 +13,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates
         public ProductStatus Status { get; set; }
         public string ProjectTitle { get; set; }
         public string ProjectPreviewUrl { get; set; }
-        public Guid ProjectUserId { get; set; }
+        public Guid UserId { get; set; }
         public long LikeCount { get; set; } = 0L;
 
         // Default constructor for EF and serialization
@@ -24,7 +24,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates
             Status = ProductStatus.AVAILABLE;
             ProjectTitle = string.Empty;
             ProjectPreviewUrl = string.Empty;
-            ProjectUserId = Guid.Empty;
+            UserId = Guid.Empty;
         }
 
         public Product(CreateProductCommand command)
@@ -34,7 +34,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates
             Status = command.Status;
             ProjectTitle = command.ProjectTitle;
             ProjectPreviewUrl = command.ProjectPreviewUrl;
-            ProjectUserId = command.ProjectUserId;
+            UserId = command.UserId;
         }
 
         public void UpdatePrice(Money newPrice)
@@ -54,10 +54,10 @@ namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Project title cannot be null or empty");
             if (userId == Guid.Empty)
-                throw new ArgumentException("Project user ID cannot be null");
+                throw new ArgumentException("User ID cannot be null");
             ProjectTitle = title;
             ProjectPreviewUrl = previewUrl;
-            ProjectUserId = userId;
+            UserId = userId;
         }
 
         public void UpdateLikeCount(long count)
