@@ -2,13 +2,13 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects
+namespace Q2.Web_Service.API.Analytics.Domain.Model.ValueObjects
 {
     [ComplexType]
     public class AnalyticsId : IEquatable<AnalyticsId>
     {
         [Column("id")]
-        public string Value { get; private set; }
+        public string Value { get; private set; } = string.Empty;
 
         // Constructor protegido requerido por EF Core
         protected AnalyticsId() { }
@@ -20,9 +20,9 @@ namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects
             Value = value;
         }
 
-        public override bool Equals(object obj) => Equals(obj as AnalyticsId);
+        public override bool Equals(object? obj) => Equals(obj as AnalyticsId);
 
-        public bool Equals(AnalyticsId other) =>
+        public bool Equals(AnalyticsId? other) =>
             other != null && Value == other.Value;
 
         public override int GetHashCode() => Value != null ? Value.GetHashCode() : 0;
