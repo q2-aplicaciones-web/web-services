@@ -22,7 +22,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.ACL.ProductCatalogContext
         ProductStatus Status,
         string ProjectTitle,
         string ProjectPreviewUrl,
-        Guid ProjectUserId,
+        Guid UserId,
         long LikeCount
     );
 }

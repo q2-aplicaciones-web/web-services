@@ -53,7 +53,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Transform
                 status,
                 projectDetails.Title,
                 projectDetails.PreviewUrl,
-                projectDetails.UserId
+                resource.UserId
             );
         }
     }

@@ -15,12 +15,12 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources
         public string Status { get; init; }
         public string ProjectTitle { get; init; }
         public string ProjectPreviewUrl { get; init; }
-        public Guid ProjectUserId { get; init; }
+        public Guid UserId { get; init; }
         public long LikeCount { get; init; }
         public DateTime CreatedAt { get; init; }
         public DateTime UpdatedAt { get; init; }
 
-        public ProductResource(Guid id, Guid projectId, decimal priceAmount, string priceCurrency, string status, string projectTitle, string projectPreviewUrl, Guid projectUserId, long likeCount, DateTime createdAt, DateTime updatedAt)
+        public ProductResource(Guid id, Guid projectId, decimal priceAmount, string priceCurrency, string status, string projectTitle, string projectPreviewUrl, Guid userId, long likeCount, DateTime createdAt, DateTime updatedAt)
         {
             Id = id;
             ProjectId = projectId;
@@ -29,7 +29,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources
             Status = status;
             ProjectTitle = projectTitle;
             ProjectPreviewUrl = projectPreviewUrl;
-            ProjectUserId = projectUserId;
+            UserId = userId;
             LikeCount = likeCount;
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;
