@@ -1,6 +1,8 @@
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Q2.Web_Service.API.DesignLab.Application.Internal.CommandServices;
 using Q2.Web_Service.API.DesignLab.Application.Internal.QueryServices;
@@ -28,6 +30,7 @@ using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Q2.WebService.API.ProductCatalog.Domain.Repositories;
 using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -150,6 +153,24 @@ builder.Services.AddCortexMediator(
         options.AddOpenCommandPipelineBehavior(typeof(LogginCommandBehavior<>));
     });
 
+var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>() ?? new TokenSettings { Secret = string.Empty };
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Secret))
+    };
+});
+
 var app = builder.Build();
 
 // Ensure database exists and create it if it doesn't
@@ -215,6 +236,9 @@ app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<JwtMiddleware>();
+
+app.UseAuthentication(); // <-- Agregado
 app.UseAuthorization();
 
 app.MapControllers();

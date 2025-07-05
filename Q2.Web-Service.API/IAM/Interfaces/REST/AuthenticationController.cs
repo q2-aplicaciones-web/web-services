@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Q2.Web_Service.API.IAM.Domain.Services;
-using Q2.Web_Service.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Q2.Web_Service.API.IAM.Interfaces.REST.Resources;
 using Q2.Web_Service.API.IAM.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
