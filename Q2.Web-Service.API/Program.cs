@@ -28,8 +28,6 @@ using Q2.Web_Service.API.Shared.Infrastructure.ASP.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Mediator.Cortex.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
-using Q2.WebService.API.ProductCatalog.Domain.Repositories;
-using Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -130,8 +128,6 @@ builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-// ProductCatalog Bounded Context
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // OrdersProcessing Bounded Context
 builder.Services.AddScoped<IOrderProcessingRepository, OrderProcessingRepository>();
@@ -144,6 +140,11 @@ builder.Services.AddScoped<IOrderProcessingQueryService, OrderProcessingQuerySer
 
 // Mediator Configuration
 builder.Services.AddScoped(typeof(ICommandPipelineBehavior<>), typeof(LogginCommandBehavior<>));
+// ProductCatalog Bounded Context
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Domain.Services.IProductCommandService, Q2.Web_Service.API.ProductCatalog.Application.Internal.CommandServices.ProductCommandServiceImpl>();
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories.IProductRepository, Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories.ProductRepository>();
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Domain.Services.IProductQueryService, Q2.Web_Service.API.ProductCatalog.Application.Internal.QueryServices.ProductQueryServiceImpl>();
+builder.Services.AddScoped<Q2.Web_Service.API.ProductCatalog.Interfaces.ACL.IProjectContextFacade, Q2.Web_Service.API.ProductCatalog.Interfaces.ACL.ProjectContextFacade>();
 
 // Add Cortex Mediator for Event Handling
 builder.Services.AddCortexMediator(

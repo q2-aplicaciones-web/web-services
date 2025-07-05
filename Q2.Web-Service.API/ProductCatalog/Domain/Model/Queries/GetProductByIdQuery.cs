@@ -1,18 +1,14 @@
 using System;
 
-namespace Q2.WebService.API.ProductCatalog.Domain.Model.Queries
+namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Queries
 {
-    /// <summary>
-    /// Query to get a product by its ID
-    /// </summary>
-    public record GetProductByIdQuery(Guid ProductId)
+    public record GetProductByIdQuery
     {
-        /// <summary>
-        /// Alternative constructor accepting string ID
-        /// </summary>
-        public GetProductByIdQuery(string productId)
-            : this(Guid.Parse(productId))
+        public Guid ProductId { get; }
+
+        public GetProductByIdQuery(Guid productId)
         {
+            ProductId = productId;
         }
     }
 }

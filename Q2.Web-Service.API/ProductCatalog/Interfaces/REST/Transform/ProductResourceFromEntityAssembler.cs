@@ -1,40 +1,36 @@
-using System.Collections.Generic;
-using System.Linq;
-using Q2.WebService.API.ProductCatalog.Domain.Model.Aggregates;
-using Q2.WebService.API.ProductCatalog.Interfaces.REST.Resources;
+using System;
+using Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates;
+using Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources;
 
-namespace Q2.WebService.API.ProductCatalog.Interfaces.REST.Transform
+namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Transform
 {
     /// <summary>
-    /// Assembler to convert Product entities to ProductResource
+    /// Transforms Product domain entities to ProductResource DTOs.
+    /// Part of the anti-corruption layer for the REST interface.
     /// </summary>
     public static class ProductResourceFromEntityAssembler
     {
         public static ProductResource ToResourceFromEntity(Product entity)
         {
-            if (entity == null) return null;
+            // Ajusta el acceso a ProjectId según tu modelo real:
+            // Ajusta el acceso a ProjectId según tu modelo real:
+            // Si ProjectId es un objeto, usa ToString(). Si es string, pásalo directo.
+            Guid projectId = entity.ProjectId != null ? Guid.Parse(entity.ProjectId.ToString()) : Guid.Empty;
 
-            return new ProductResource
-            {
-                Id = entity.Id,
-                ProjectId = entity.ProjectId.Value,
-                ManufacturerId = entity.ManufacturerId.Value,
-                Price = entity.Price.Amount,
-                Currency = entity.Price.Currency,
-                Likes = entity.Likes,
-                Tags = entity.Tags.ToList(),
-                Gallery = entity.Gallery.ToList(),
-                Rating = entity.Rating.Value,
-                Status = entity.Status,
-                Comments = entity.Comments.Select(CommentResourceFromEntityAssembler.ToResourceFromEntity).ToList(),
-                CreatedAt = entity.CreatedAt,
-                UpdatedAt = entity.UpdatedAt
-            };
-        }
-
-        public static IEnumerable<ProductResource> ToResourceFromEntityList(IEnumerable<Product> entities)
-        {
-            return entities?.Select(ToResourceFromEntity).ToList();
+            return new ProductResource(
+                entity.Id,
+                projectId,
+                entity.Price != null ? entity.Price.Amount : 0,
+                entity.Price != null ? entity.Price.Currency : string.Empty,
+                entity.Status.ToString(),
+                entity.ProjectTitle,
+                entity.ProjectPreviewUrl,
+                entity.ProjectUserId,
+                entity.LikeCount,
+                // Elimina CreatedAt y UpdatedAt si no existen en el modelo
+                default,
+                default
+            );
         }
     }
 }

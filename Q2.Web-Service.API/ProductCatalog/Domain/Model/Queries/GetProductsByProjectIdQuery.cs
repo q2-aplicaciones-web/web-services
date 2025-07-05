@@ -1,17 +1,18 @@
-using Q2.WebService.API.ProductCatalog.Domain.Model.ValueObjects;
+using Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects;
 
-namespace Q2.WebService.API.ProductCatalog.Domain.Model.Queries
+namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Queries
 {
-    /// <summary>
-    /// Query to get products by project ID
-    /// </summary>
-    public record GetProductsByProjectIdQuery(ProjectId ProjectId)
+    public record GetProductsByProjectIdQuery
     {
-        /// <summary>
-        /// Alternative constructor accepting string ID
-        /// </summary>
+        public ProjectId ProjectId { get; }
+
+        public GetProductsByProjectIdQuery(ProjectId projectId)
+        {
+            ProjectId = projectId;
+        }
+
         public GetProductsByProjectIdQuery(string projectId)
-            : this(ProjectId.Of(projectId))
+            : this(new ProjectId(projectId))
         {
         }
     }

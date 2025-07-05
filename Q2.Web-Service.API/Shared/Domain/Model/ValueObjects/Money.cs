@@ -7,6 +7,8 @@ namespace Q2.Web_Service.API.Shared.Domain.Model.ValueObjects
     /// </summary>
     public record Money
     {
+        public const string DEFAULT_CURRENCY = "USD";
+
         public decimal Amount { get; }
         public string Currency { get; }
 
@@ -14,10 +16,8 @@ namespace Q2.Web_Service.API.Shared.Domain.Model.ValueObjects
         {
             if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
                 throw new ArgumentException("Currency code must be a 3-letter ISO code", nameof(currency));
-            
             if (amount < 0)
                 throw new ArgumentException("Amount cannot be negative", nameof(amount));
-
             Amount = amount;
             Currency = currency.ToUpper();
         }
@@ -31,7 +31,6 @@ namespace Q2.Web_Service.API.Shared.Domain.Model.ValueObjects
         {
             if (other.Currency != Currency)
                 throw new InvalidOperationException("Cannot add money with different currencies");
-
             return new Money(Amount + other.Amount, Currency);
         }
 
@@ -39,7 +38,6 @@ namespace Q2.Web_Service.API.Shared.Domain.Model.ValueObjects
         {
             if (other.Currency != Currency)
                 throw new InvalidOperationException("Cannot subtract money with different currencies");
-
             return new Money(Amount - other.Amount, Currency);
         }
 

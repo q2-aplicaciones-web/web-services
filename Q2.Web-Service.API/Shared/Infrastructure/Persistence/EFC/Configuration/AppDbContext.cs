@@ -41,9 +41,32 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
                     v => new AnalyticsId(v.ToString())
                 );
 
+            // Configuración para ProjectId en Product (ValueObject)
+            builder.Entity<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.Product>()
+                .Property(p => p.ProjectId)
+                .HasConversion(
+                    v => v != null ? v.Value : null,
+                    v => v != null ? new Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects.ProjectId(v) : null
+                );
+
+            // Configuración para Money en Product (ValueObject)
+            builder.Entity<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.Product>()
+                .OwnsOne(p => p.Price, m =>
+                {
+                    m.Property(x => x.Amount).HasColumnName("Price_Amount");
+                    m.Property(x => x.Currency).HasColumnName("Price_Currency");
+                    // Remove any key or foreign key mapping for Money
+                    m.Ignore("Id");
+                    m.Ignore("ProductId");
+                    m.WithOwner().HasForeignKey("Id");
+                    m.HasKey("Id");
+                });
+
             // Convención opcional de nombres en snake_case si has definido la extensión
             builder.UseSnakeCaseNamingConvention(); // Asegúrate de tener implementada esta extensión
         }
+
+        public DbSet<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.Product> Products { get; set; }
 
     }
 }
