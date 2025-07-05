@@ -1,25 +1,38 @@
 using System;
-using System.Collections.Generic;
-
-namespace Q2.WebService.API.ProductCatalog.Interfaces.REST.Resources
+namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources
 {
     /// <summary>
-    /// Resource representing a product for API responses
+    /// Resource representation of a Product.
+    /// Note: We use primitive types at the API boundary layer instead of value objects
+    /// as part of the anti-corruption layer pattern.
     /// </summary>
-    public class ProductResource
+    public record ProductResource
     {
-        public Guid Id { get; set; }
-        public Guid ProjectId { get; set; }
-        public Guid ManufacturerId { get; set; }
-        public decimal Price { get; set; }
-        public string Currency { get; set; }
-        public int Likes { get; set; }
-        public List<string> Tags { get; set; }
-        public List<string> Gallery { get; set; }
-        public double Rating { get; set; }
-        public string Status { get; set; }
-        public List<CommentResource> Comments { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public Guid Id { get; init; }
+        public Guid ProjectId { get; init; }
+        public decimal PriceAmount { get; init; }
+        public string PriceCurrency { get; init; }
+        public string Status { get; init; }
+        public string ProjectTitle { get; init; }
+        public string ProjectPreviewUrl { get; init; }
+        public Guid ProjectUserId { get; init; }
+        public long LikeCount { get; init; }
+        public DateTime CreatedAt { get; init; }
+        public DateTime UpdatedAt { get; init; }
+
+        public ProductResource(Guid id, Guid projectId, decimal priceAmount, string priceCurrency, string status, string projectTitle, string projectPreviewUrl, Guid projectUserId, long likeCount, DateTime createdAt, DateTime updatedAt)
+        {
+            Id = id;
+            ProjectId = projectId;
+            PriceAmount = priceAmount;
+            PriceCurrency = priceCurrency;
+            Status = status;
+            ProjectTitle = projectTitle;
+            ProjectPreviewUrl = projectPreviewUrl;
+            ProjectUserId = projectUserId;
+            LikeCount = likeCount;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
     }
 }
