@@ -1,4 +1,5 @@
 using Q2.Web_Service.API.DesignLab.Domain.Model.Commands;
+using Q2.Web_Service.API.DesignLab.Domain.Model.ValueObjects;
 
 namespace Q2.Web_Service.API.DesignLab.Domain.Model.Entities;
 
@@ -20,7 +21,7 @@ public class TextLayer : Layer
         FontFamily = null!; // Will be set by EF Core
     }
 
-    public TextLayer(CreateTextLayerCommand command) : base(command)
+    public TextLayer(CreateTextLayerCommand command) : base(command.ProjectId, ELayerType.Text)
     {
         Text= command.Text;
         FontSize = command.FontSize;
