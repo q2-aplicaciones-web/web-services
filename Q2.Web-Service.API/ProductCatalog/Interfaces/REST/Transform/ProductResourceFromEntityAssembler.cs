@@ -15,7 +15,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Transform
             // Ajusta el acceso a ProjectId según tu modelo real:
             // Ajusta el acceso a ProjectId según tu modelo real:
             // Si ProjectId es un objeto, usa ToString(). Si es string, pásalo directo.
-            Guid projectId = Guid.Parse(entity.ProjectId.ToString());
+            Guid projectId = entity.ProjectId != null ? Guid.Parse(entity.ProjectId.ToString()) : Guid.Empty;
 
             return new ProductResource(
                 entity.Id,

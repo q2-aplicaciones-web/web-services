@@ -133,7 +133,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Application.ACL
             // Usa ToString() para obtener el valor del ProjectId si no tiene 'Value'
             return new ProductInfo(
                 product.Id,
-                Guid.Parse(product.ProjectId.ToString()),
+                product.ProjectId != null ? Guid.Parse(product.ProjectId.ToString()) : Guid.Empty,
                 product.Price,
                 product.Status,
                 product.ProjectTitle,

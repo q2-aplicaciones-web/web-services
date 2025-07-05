@@ -45,8 +45,8 @@ namespace Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration
             builder.Entity<Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates.Product>()
                 .Property(p => p.ProjectId)
                 .HasConversion(
-                    v => v.Value,
-                    v => new Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects.ProjectId(v)
+                    v => v != null ? v.Value : null,
+                    v => v != null ? new Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects.ProjectId(v) : null
                 );
 
             // Configuración para Money en Product (ValueObject)
