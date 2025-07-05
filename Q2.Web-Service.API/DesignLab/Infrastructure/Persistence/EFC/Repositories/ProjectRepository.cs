@@ -13,6 +13,7 @@ public class ProjectRepository(AppDbContext context) : BaseRepository<Project>(c
     {
         return await Context
             .Set<Project>()
+            .Include(project => project.Layers)
             .Where(project => project.UserId == new UserId(userId)).ToListAsync();
     }
 
@@ -20,6 +21,7 @@ public class ProjectRepository(AppDbContext context) : BaseRepository<Project>(c
     {
         return await Context
             .Set<Project>()
+            .Include(project => project.Layers)
             .FirstOrDefaultAsync(project => project.Id == new ProjectId(projectId));
     }
 }
