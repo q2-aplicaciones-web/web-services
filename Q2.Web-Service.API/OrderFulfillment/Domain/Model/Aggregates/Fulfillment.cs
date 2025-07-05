@@ -1,5 +1,5 @@
-using System;
-using System.Collections.Generic;
+using System;        // Marks the fulfillment as shipped and updates the date
+
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Commands;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Entities;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.ValueObjects;
@@ -14,17 +14,17 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
         public void MarkAsShipped()
         {
             if (Status != FulfillmentStatus.PENDING && Status != FulfillmentStatus.PROCESSING)
-                throw new InvalidOperationException("Solo se puede marcar como enviado si está en estado PENDING o PROCESSING.");
+                throw new InvalidOperationException("Can only be marked as shipped if status is PENDING or PROCESSING.");
             Status = FulfillmentStatus.SHIPPED;
             ShippedDate = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
 
-        // Marca el fulfillment como recibido y actualiza la fecha
+        // Marks the fulfillment as received and updates the date
         public void MarkAsReceived()
         {
             if (Status != FulfillmentStatus.SHIPPED)
-                throw new InvalidOperationException("Solo se puede marcar como recibido si está en estado SHIPPED.");
+                throw new InvalidOperationException("Can only be marked as received if status is SHIPPED.");
             Status = FulfillmentStatus.DELIVERED;
             ReceivedDate = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
@@ -81,6 +81,18 @@ namespace Q2.Web_Service.API.OrderFulfillment.Domain.Model.Aggregates
         public void UpdateStatus(FulfillmentStatus status)
         {
             Status = status;
+            
+            // Automatically set dates based on status changes
+            if (status == FulfillmentStatus.SHIPPED && ShippedDate == null)
+            {
+                ShippedDate = DateTime.UtcNow.AddDays(2);
+            }
+            else if (status == FulfillmentStatus.DELIVERED && ReceivedDate == null)
+            {
+                ReceivedDate = DateTime.UtcNow;
+            }
+            
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void UpdateReceivedDate(DateTime? receivedDate)
