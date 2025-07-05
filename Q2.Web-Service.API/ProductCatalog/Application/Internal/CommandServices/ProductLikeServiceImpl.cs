@@ -4,6 +4,7 @@ using Q2.Web_Service.API.ProductCatalog.Domain.Model.Commands;
 using Q2.Web_Service.API.ProductCatalog.Domain.Model.Queries;
 using Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects;
 using Q2.Web_Service.API.ProductCatalog.Domain.Services;
+using Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.repositories;
 using Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
 
 namespace Q2.Web_Service.API.ProductCatalog.Application.Internal.CommandServices

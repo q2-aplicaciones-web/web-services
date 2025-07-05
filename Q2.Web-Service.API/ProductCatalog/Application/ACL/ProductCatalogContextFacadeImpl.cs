@@ -138,7 +138,7 @@ namespace Q2.Web_Service.API.ProductCatalog.Application.ACL
                 product.Status,
                 product.ProjectTitle,
                 product.ProjectPreviewUrl,
-                product.ProjectUserId,
+                product.UserId,
                 product.LikeCount
             );
         }
