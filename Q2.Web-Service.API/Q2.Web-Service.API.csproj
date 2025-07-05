@@ -31,6 +31,8 @@
         <PackageReference Include="Cortex.Mediator" Version="1.6.1" />
     </ItemGroup>
 
+  <!-- Removed explicit Compile Include for REST/Resources and REST/Transform files to avoid duplicate inclusion errors. -->
+
     <ItemGroup>
       <Folder Include="OrdersProcessing\Domain\Model\ValueObjects\" />
       <Folder Include="Shared\Infrastructure\Interfaces\" />

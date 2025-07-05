@@ -1,3 +1,4 @@
+
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -133,6 +134,31 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IOrderProcessingRepository, OrderProcessingRepository>();
 builder.Services.AddScoped<IOrderProcessingCommandService, OrderProcessingCommandService>();
 builder.Services.AddScoped<IOrderProcessingQueryService, OrderProcessingQueryService>();
+
+// OrderFulfillment Bounded Context
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerQueryService,
+    Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.ManufacturerQueryServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Repositories.IManufacturerRepository,
+    Q2.Web_Service.API.OrderFulfillment.Infrastructure.Persistence.EFC.Repositories.ManufacturerRepository>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerCommandService,
+    Q2.Web_Service.API.OrderFulfillment.Application.Internal.Commandservices.ManufacturerCommandServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentCommandService,
+    Q2.Web_Service.API.OrderFulfillment.Application.Internal.Commandservices.FulfillmentCommandServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Repositories.IFulfillmentRepository,
+    Q2.Web_Service.API.OrderFulfillment.Infrastructure.Persistence.EFC.Repositories.FulfillmentRepository>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentQueryService,
+    Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.FulfillmentQueryServiceImpl>();
 
 // Analytics Bounded Context - TODO: Fix namespaces in repository implementations
 // builder.Services.AddScoped<ICustomerAnalyticsRepository, CustomerAnalyticsRepository>();
