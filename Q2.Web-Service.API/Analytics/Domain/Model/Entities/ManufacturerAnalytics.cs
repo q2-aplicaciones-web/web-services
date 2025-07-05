@@ -2,16 +2,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
+using Q2.Web_Service.API.Analytics.Domain.Model.ValueObjects;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities
+namespace Q2.Web_Service.API.Analytics.Domain.Model.Entities
 {
     [Table("manufacturer_analytics")]
     public class ManufacturerAnalytics
     {
         [Key]
         [Column("id")]
-        public AnalyticsId Id { get; private set; }
+        public AnalyticsId Id { get; private set; } = new AnalyticsId("");
 
         [Column("user_id")]
         public Guid UserId { get; private set; }

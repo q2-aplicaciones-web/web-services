@@ -1,14 +1,19 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Queries;
-using Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories;
+using Q2.Web_Service.API.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.API.Analytics.Domain.Model.Queries;
+using Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Repositories;
 
-namespace Q2.WebService.API.Analytics.Application.Internal.QueryServices
+namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 {
-    public class CustomerAnalyticsQueryServiceImpl(CustomerAnalyticsRepository customerAnalyticsRepository)
+    public class CustomerAnalyticsQueryServiceImpl
     {
-        private readonly CustomerAnalyticsRepository _customerAnalyticsRepository = customerAnalyticsRepository;
+        private readonly CustomerAnalyticsRepository _customerAnalyticsRepository;
 
-        public CustomerAnalytics Handle(GetCustomerAnalyticsByUserIdQuery query)
+        public CustomerAnalyticsQueryServiceImpl(CustomerAnalyticsRepository customerAnalyticsRepository)
+        {
+            _customerAnalyticsRepository = customerAnalyticsRepository;
+        }
+
+        public CustomerAnalytics? Handle(GetCustomerAnalyticsByUserIdQuery query)
         {
             return _customerAnalyticsRepository.FindByUserId(query.UserId);
         }

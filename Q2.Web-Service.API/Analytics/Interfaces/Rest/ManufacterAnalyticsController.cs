@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Q2.WebService.API.Analytics.Application.Internal.QueryServices;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Queries;
-using Quri.Teelab.Api.Teelab.Analytics.Interfaces.Rest.Resources;
+using Q2.Web_Service.API.Analytics.Application.Internal.Queryservices;
+using Q2.Web_Service.API.Analytics.Domain.Model.Queries;
+using Q2.Web_Service.API.Analytics.Interfaces.Rest.Resources;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Interfaces.Rest
+namespace Q2.Web_Service.API.Analytics.Interfaces.Rest
 {
     [ApiController]
     [Route("api/analytics")]
