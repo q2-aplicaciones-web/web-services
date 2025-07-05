@@ -21,8 +21,10 @@ public class FulfillmentItemRepository : IFulfillmentItemRepository
 
     public FulfillmentItem? FindById(FulfillmentItemId id)
     {
+        // Solución universal: trae a memoria y compara por value object
         return _context.FulfillmentItems
-            .FirstOrDefault(i => i.Id.Value == id.Value);
+            .AsEnumerable()
+            .FirstOrDefault(i => i.Id.Equals(id));
     }
 
     public IList<FulfillmentItem> FindByFulfillmentId(Guid fulfillmentId)
@@ -34,17 +36,22 @@ public class FulfillmentItemRepository : IFulfillmentItemRepository
 
     public FulfillmentItem Save(FulfillmentItem item)
     {
-        var existing = _context.FulfillmentItems.Find(item.Id);
+        // Solución universal: trae a memoria y compara por value object
+        var existing = _context.FulfillmentItems.AsEnumerable().FirstOrDefault(i => i.Id.Equals(item.Id));
         if (existing == null)
         {
             _context.FulfillmentItems.Add(item);
+            _context.SaveChanges();
+            _context.Entry(item).Reload();
+            return item;
         }
         else
         {
-            _context.Entry(existing).CurrentValues.SetValues(item);
+            // El objeto ya está trackeado y modificado por el dominio
+            _context.SaveChanges();
+            _context.Entry(existing).Reload();
+            return existing;
         }
-        _context.SaveChanges();
-        return item;
     }
 }
 }

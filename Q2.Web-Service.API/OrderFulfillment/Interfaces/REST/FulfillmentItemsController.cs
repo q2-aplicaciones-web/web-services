@@ -47,17 +47,19 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             {
                 var fulfillmentItem = _fulfillmentItemCommandService.Handle(command);
                 if (fulfillmentItem == null)
-                    return BadRequest();
+                    return NotFound();
                 var resource = FulfillmentItemResourceFromEntityAssembler.ToResourceFromEntity(fulfillmentItem);
                 return Ok(resource);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                if (ex.Message.Contains("does not exist", StringComparison.OrdinalIgnoreCase))
+                    return NotFound();
+                return BadRequest(new { error = ex.Message });
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 
@@ -70,12 +72,14 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             {
                 var fulfillmentItem = _fulfillmentItemCommandService.Handle(command);
                 if (fulfillmentItem == null)
-                    return BadRequest();
+                    return NotFound();
                 var resource = FulfillmentItemResourceFromEntityAssembler.ToResourceFromEntity(fulfillmentItem);
                 return Ok(resource);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                if (ex.Message.Contains("does not exist", StringComparison.OrdinalIgnoreCase))
+                    return NotFound();
                 return BadRequest();
             }
             catch (InvalidOperationException)
@@ -93,12 +97,14 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             {
                 var fulfillmentItem = _fulfillmentItemCommandService.Handle(command);
                 if (fulfillmentItem == null)
-                    return BadRequest();
+                    return NotFound();
                 var resource = FulfillmentItemResourceFromEntityAssembler.ToResourceFromEntity(fulfillmentItem);
                 return Ok(resource);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                if (ex.Message.Contains("does not exist", StringComparison.OrdinalIgnoreCase))
+                    return NotFound();
                 return BadRequest();
             }
             catch (InvalidOperationException)

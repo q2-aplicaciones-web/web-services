@@ -157,6 +157,18 @@ builder.Services.AddScoped<
     Q2.Web_Service.API.OrderFulfillment.Infrastructure.Persistence.EFC.Repositories.FulfillmentRepository>();
 
 builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Repositories.IFulfillmentItemRepository,
+    Q2.Web_Service.API.OrderFulfillment.Infrastructure.Persistence.EFC.Repositories.FulfillmentItemRepository>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentItemCommandService,
+    Q2.Teelab.Api.Teelab.OrderFulfillment.Application.Internal.Commandservices.FulfillmentItemCommandServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentItemQueryService,
+    Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.FulfillmentItemQueryServiceImpl>();
+
+builder.Services.AddScoped<
     Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentQueryService,
     Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.FulfillmentQueryServiceImpl>();
 
