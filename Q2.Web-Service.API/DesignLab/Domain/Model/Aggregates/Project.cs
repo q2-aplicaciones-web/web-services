@@ -10,6 +10,10 @@ public partial class Project
     public string Title { get; private set; } = null!;
     public UserId UserId { get; private set; } = null!;
     public Uri? PreviewUrl { get; private set; }
+    public EProjectStatus Status { get; private set; }
+    public EGarmentColor Color { get; private set; }
+    public EGarmentGender Gender { get; private set; }
+    public EGarmentSize Size { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
@@ -63,5 +67,16 @@ public partial class Project
 
         Layers.Add(layer);
         UpdatedAt = DateTime.UtcNow; // Update the project timestamp
+    }
+    
+    // Update project details method
+    public void UpdateDetails(Uri? previewUrl, EProjectStatus status, EGarmentColor color, EGarmentSize size, EGarmentGender gender)
+    {
+        PreviewUrl = previewUrl;
+        Status = status;
+        Color = color;
+        Size = size;
+        Gender = gender;
+        UpdatedAt = DateTime.UtcNow;
     }
 }
