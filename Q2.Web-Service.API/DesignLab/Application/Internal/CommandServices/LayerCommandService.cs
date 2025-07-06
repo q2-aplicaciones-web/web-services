@@ -39,7 +39,7 @@ public class LayerCommandService(ILayerRepository layerRepository, IProjectRepos
             throw new ArgumentException("Project not found", nameof(command.ProjectId));
         }
 
-        var layer = project.Layers.FirstOrDefault(l => l.Id.ToString() == command.LayerId);
+        var layer = project.Layers.FirstOrDefault(l => l.Id.Id.ToString() == command.LayerId);
         if (layer == null)
         {
             throw new ArgumentException("Layer not found in the project", nameof(command.LayerId));
