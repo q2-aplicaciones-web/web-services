@@ -1,68 +1,81 @@
+using System;
+using System.Linq;
 using Q2.Web_Service.API.Analytics.Domain.Model.Entities;
 using Q2.Web_Service.API.Analytics.Domain.Model.Queries;
 using Q2.Web_Service.API.Analytics.Domain.Services;
+using Q2.Web_Service.API.OrderFulfillment.Domain.Model.ValueObjects;
+using Q2.Web_Service.API.OrderFulfillment.Interfaces.ACL;
 
 namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 {
     /// <summary>
-    /// Implementación del servicio de consulta de analytics de manufacturers que calcula KPIs en tiempo real
+    /// Manufacturer analytics query service implementation that calculates KPIs in real-time
     /// </summary>
     public class ManufacturerAnalyticsRealTimeQueryServiceImpl : IManufacturerAnalyticsQueryService
     {
-        // TODO: Inyectar las dependencias necesarias para acceder a:
-        // - ManufacturerRepository (para verificar existencia)
-        // - FulfillmentRepository (para obtener órdenes del manufacturer)
-        // - Otros contextos según sea necesario
+        private readonly IOrderFulfillmentContextFacade _orderFulfillmentFacade;
 
-        public ManufacturerAnalyticsRealTimeQueryServiceImpl()
+        public ManufacturerAnalyticsRealTimeQueryServiceImpl(
+            IOrderFulfillmentContextFacade orderFulfillmentFacade)
         {
-            // TODO: Inyectar dependencias
+            _orderFulfillmentFacade = orderFulfillmentFacade ?? throw new ArgumentNullException(nameof(orderFulfillmentFacade));
         }
 
         public ManufacturerAnalytics? Handle(GetManufacturerAnalyticsByManufacturerIdQuery query)
         {
-            // TODO: Implementar la lógica de cálculo en tiempo real según la documentación:
-            
-            // 1. Verificar que el manufacturer existe
-            // var manufacturer = manufacturerRepository.FindById(query.ManufacturerId);
-            // if (manufacturer == null) return null;
+            if (query?.ManufacturerId == null || query.ManufacturerId == Guid.Empty)
+                return null;
 
-            // 2. Obtener todos los fulfillments del manufacturer
-            // var fulfillments = fulfillmentRepository.FindByManufacturerId(query.ManufacturerId);
+            try
+            {
+                if (!_orderFulfillmentFacade.ManufacturerExists(query.ManufacturerId))
+                    return null;
 
-            // 3. Calcular KPIs
-            // var totalOrdersReceived = fulfillments.Count;
-            // var pendingFulfillments = fulfillments.Count(f => f.Status == PENDING || f.Status == PROCESSING);
-            // var producedProjects = fulfillments.Count(f => f.Status == SHIPPED || f.Status == DELIVERED);
-            // var avgFulfillmentTimeDays = CalculateAverageFulfillmentTime(fulfillments);
+                var fulfillments = _orderFulfillmentFacade.GetFulfillmentsByManufacturerId(query.ManufacturerId);
 
-            // 4. Crear y retornar la entidad
-            // return ManufacturerAnalytics.CreateFromRealTimeData(
-            //     query.ManufacturerId,
-            //     totalOrdersReceived,
-            //     pendingFulfillments,
-            //     producedProjects,
-            //     avgFulfillmentTimeDays
-            // );
+                var totalOrdersReceived = fulfillments.Count;
+                
+                var pendingFulfillments = fulfillments.Count(f => 
+                    f.Status == FulfillmentStatus.PENDING || 
+                    f.Status == FulfillmentStatus.PROCESSING);
+                
+                var producedProjects = fulfillments.Count(f => 
+                    f.Status == FulfillmentStatus.SHIPPED || 
+                    f.Status == FulfillmentStatus.DELIVERED);
+                
+                var avgFulfillmentTimeDays = CalculateAverageFulfillmentTime(fulfillments);
 
-            // Por ahora retorno datos de ejemplo hasta que se implementen las dependencias
-            return ManufacturerAnalytics.CreateFromRealTimeData(
-                query.ManufacturerId,
-                145,  // totalOrdersReceived
-                23,   // pendingFulfillments
-                122,  // producedProjects
-                5.7   // avgFulfillmentTimeDays
-            );
+                return ManufacturerAnalytics.CreateFromRealTimeData(
+                    query.ManufacturerId,
+                    totalOrdersReceived,
+                    pendingFulfillments,
+                    producedProjects,
+                    avgFulfillmentTimeDays
+                );
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        // TODO: Implementar método para calcular tiempo promedio de fulfillment
-        // private double CalculateAverageFulfillmentTime(IEnumerable<Fulfillment> fulfillments)
-        // {
-        //     return fulfillments
-        //         .Where(f => f.ReceivedDate != null && f.ShippedDate != null)
-        //         .Select(f => (f.ShippedDate.Value - f.ReceivedDate.Value).TotalDays)
-        //         .DefaultIfEmpty(0.0)
-        //         .Average();
-        // }
+        /// <summary>
+        /// Calculates the average fulfillment time in days
+        /// </summary>
+        private double CalculateAverageFulfillmentTime(System.Collections.Generic.List<FulfillmentInfo> fulfillments)
+        {
+            var completedFulfillments = fulfillments
+                .Where(f => f.ReceivedDate != null && f.ShippedDate != null)
+                .ToList();
+
+            if (!completedFulfillments.Any())
+                return 0.0;
+
+            var totalDays = completedFulfillments
+                .Select(f => (f.ShippedDate!.Value - f.ReceivedDate!.Value).TotalDays)
+                .Sum();
+
+            return totalDays / completedFulfillments.Count;
+        }
     }
 }
