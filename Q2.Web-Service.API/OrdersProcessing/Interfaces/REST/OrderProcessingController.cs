@@ -3,6 +3,7 @@ using Q2.Web_Service.API.OrdersProcessing.Domain.Model.Queries;
 using Q2.Web_Service.API.OrdersProcessing.Domain.Services;
 using Q2.Web_Service.API.OrdersProcessing.Interfaces.REST.Resources;
 using Q2.Web_Service.API.OrdersProcessing.Interfaces.REST.Transform;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Q2.Web_Service.API.OrdersProcessing.Interfaces.REST;
 
@@ -35,5 +36,40 @@ public class OrderProcessingController(IOrderProcessingQueryService queryService
         var orderId = await commandService.Handle(command);
         if (orderId == null) return StatusCode(500, "Error creating order");
         return CreatedAtAction(nameof(GetOrderById), new { orderId }, new { id = orderId });
+    }
+
+    [HttpPost("payment-intents")]
+    [SwaggerOperation(
+        Summary = "Create Stripe Payment Intent",
+        Description = "Creates a Stripe Payment Intent and returns the client secret for processing payment securely"
+    )]
+    [SwaggerResponse(200, "Payment Intent created successfully", typeof(PaymentIntentResource))]
+    [SwaggerResponse(400, "Invalid request data")]
+    [SwaggerResponse(500, "Internal server error")]
+    public async Task<IActionResult> CreatePaymentIntent([FromBody] CreatePaymentIntentResource resource)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var command = CreatePaymentIntentCommandFromResourceAssembler.CreateCommandFromResource(resource);
+            var paymentIntent = await commandService.Handle(command);
+            var intentResource = PaymentIntentResourceFromEntityAssembler.ToResourceFromEntity(paymentIntent);
+
+            return Ok(intentResource);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = $"Error creating order intent: {ex.Message}" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = $"An unexpected error occurred: {ex.Message}" });
+        }
     }
 }

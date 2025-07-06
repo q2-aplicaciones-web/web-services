@@ -28,9 +28,15 @@ using Q2.Web_Service.API.Shared.Infrastructure.ASP.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Mediator.Cortex.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Q2.Web_Service.API.Shared.Infrastructure.Stripe;
+using Q2.Web_Service.API.Shared.Infrastructure.Stripe.Configuration;
+using Q2.Web_Service.API.Shared.Infrastructure.Stripe.Middleware;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add secrets configuration file
+builder.Configuration.AddJsonFile("Properties/secrets.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -133,6 +139,9 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IOrderProcessingRepository, OrderProcessingRepository>();
 builder.Services.AddScoped<IOrderProcessingCommandService, OrderProcessingCommandService>();
 builder.Services.AddScoped<IOrderProcessingQueryService, OrderProcessingQueryService>();
+
+// Stripe Configuration
+builder.Services.AddStripeServices(builder.Configuration);
 
 // OrderFulfillment Bounded Context
 builder.Services.AddScoped<
@@ -299,6 +308,9 @@ if (app.Environment.IsDevelopment())
 
 // Apply CORS Policy
 app.UseCors("AllowAllPolicy");
+
+// Initialize Stripe
+app.UseStripeInitialization();
 
 app.UseHttpsRedirection();
 

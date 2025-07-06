@@ -5,3 +5,4 @@ riderModule.iml
 /_ReSharper.Caches/
 Q2.Web-Service.API/appsettings.json
 Q2.Web-Service.API/appsettings.Development.json
+Q2.Web-Service.API/Properties/secrets.json
