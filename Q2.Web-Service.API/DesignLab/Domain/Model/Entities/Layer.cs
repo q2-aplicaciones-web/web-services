@@ -37,4 +37,18 @@ public abstract class Layer
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// Updates the coordinates of the layer
+    /// </summary>
+    /// <param name="x">X coordinate (horizontal position)</param>
+    /// <param name="y">Y coordinate (vertical position)</param>
+    /// <param name="z">Z coordinate (depth/layer index)</param>
+    public void UpdateCoordinates(int x, int y, int z)
+    {
+        X = x;
+        Y = y;
+        Z = z;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
