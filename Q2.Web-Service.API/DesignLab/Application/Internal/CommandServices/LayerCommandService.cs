@@ -91,4 +91,30 @@ public class LayerCommandService(ILayerRepository layerRepository, IProjectRepos
         return imageLayer.Id;
     }
 
+    public async Task<LayerId?> Handle(UpdateLayerCoordinatesCommand command)
+    {
+        // First verify the project exists
+        var project = await projectRepository.FindByIdAsync(command.ProjectId);
+        if (project == null)
+        {
+            throw new ArgumentException($"Project with ID {command.ProjectId.Id} does not exist.", nameof(command.ProjectId));
+        }
+
+        // Find the layer in the project
+        var layer = project.Layers.FirstOrDefault(l => l.Id.Id == command.LayerId.Id);
+        if (layer == null)
+        {
+            throw new ArgumentException($"Layer with ID {command.LayerId.Id} does not exist in project {command.ProjectId.Id}", nameof(command.LayerId));
+        }
+
+        // Update the coordinates
+        layer.UpdateCoordinates(command.X, command.Y, command.Z);
+
+        // Save the project (which will cascade to save the layer)
+        projectRepository.Update(project);
+        await unitOfWork.CompleteAsync();
+
+        return layer.Id;
+    }
+
 }
