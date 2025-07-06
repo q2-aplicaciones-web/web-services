@@ -172,9 +172,18 @@ builder.Services.AddScoped<
     Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentQueryService,
     Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.FulfillmentQueryServiceImpl>();
 
-// Analytics Bounded Context - TODO: Fix namespaces in repository implementations
-// builder.Services.AddScoped<ICustomerAnalyticsRepository, CustomerAnalyticsRepository>();
-// builder.Services.AddScoped<IManufacturerAnalyticsRepository, ManufacturerAnalyticsRepository>();
+// Analytics Bounded Context
+builder.Services.AddScoped<
+    Q2.Web_Service.API.Analytics.Domain.Services.IManufacturerAnalyticsQueryService,
+    Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.ManufacturerAnalyticsRealTimeQueryServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.Analytics.Domain.Services.ICustomerAnalyticsQueryService,
+    Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.CustomerAnalyticsRealTimeQueryServiceImpl>();
+
+// Temporary registration until interfaces are properly implemented
+builder.Services.AddScoped<Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.ManufacturerAnalyticsRealTimeQueryServiceImpl>();
+builder.Services.AddScoped<Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.CustomerAnalyticsRealTimeQueryServiceImpl>();
 
 // Mediator Configuration
 builder.Services.AddScoped(typeof(ICommandPipelineBehavior<>), typeof(LogginCommandBehavior<>));
