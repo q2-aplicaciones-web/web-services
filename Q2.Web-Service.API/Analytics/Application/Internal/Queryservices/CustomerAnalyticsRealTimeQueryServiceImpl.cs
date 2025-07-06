@@ -10,7 +10,7 @@ using Q2.Web_Service.API.OrdersProcessing.Interfaces.REST.ACL;
 namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 {
     /// <summary>
-    /// Implementación del servicio de consulta de analytics de customers que calcula KPIs en tiempo real
+    /// Customer analytics query service implementation that calculates KPIs in real-time
     /// </summary>
     public class CustomerAnalyticsRealTimeQueryServiceImpl : ICustomerAnalyticsQueryService
     {
@@ -35,13 +35,9 @@ namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 
             try
             {
-                // 1. Obtener total de proyectos del usuario
                 var totalProjects = _projectFacade.GetProjectCountByUserId(query.UserId);
-
-                // 2. Obtener IDs de proyectos del usuario
                 var userProjectIds = _projectFacade.FetchProjectIdsByUserId(query.UserId);
 
-                // 3. Clasificar proyectos según tengan productos o no
                 int blueprints = 0;
                 int designedGarments = 0;
                 
@@ -54,11 +50,9 @@ namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
                         blueprints++;
                 }
 
-                // 4. Obtener órdenes completadas
                 var userOrders = _orderProcessingFacade.FetchOrdersByUserId(query.UserId);
                 int completed = userOrders.Count;
 
-                // 5. Crear y retornar la entidad
                 return CustomerAnalytics.CreateFromRealTimeData(
                     query.UserId,
                     (int)totalProjects,
@@ -69,7 +63,6 @@ namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
             }
             catch (Exception)
             {
-                // En caso de error, retorna null para indicar que no se pudieron obtener los analytics
                 return null;
             }
         }

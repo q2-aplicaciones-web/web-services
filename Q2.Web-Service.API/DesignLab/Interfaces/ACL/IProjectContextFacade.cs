@@ -4,33 +4,33 @@ using System.Collections.Generic;
 namespace Q2.Web_Service.API.DesignLab.Interfaces.ACL;
 
 /// <summary>
-/// Anti-Corruption Layer para el contexto de DesignLab que expone información de proyectos
+/// Anti-Corruption Layer for DesignLab context that exposes project information
 /// </summary>
 public interface IProjectContextFacade
 {
     /// <summary>
-    /// Verifica si existe un proyecto con el ID especificado
+    /// Verifies if a project exists with the specified ID
     /// </summary>
     bool ProjectExists(Guid projectId);
     
     /// <summary>
-    /// Obtiene el conteo total de proyectos para un usuario
+    /// Gets the total count of projects for a user
     /// </summary>
     long GetProjectCountByUserId(Guid userId);
     
     /// <summary>
-    /// Obtiene los IDs de todos los proyectos de un usuario
+    /// Gets the IDs of all projects belonging to a user
     /// </summary>
     List<Guid> FetchProjectIdsByUserId(Guid userId);
     
     /// <summary>
-    /// Obtiene los detalles de un proyecto específico para el contexto de productos
+    /// Gets the details of a specific project for the product context
     /// </summary>
     ProjectDetails? FetchProjectDetailsForProduct(Guid projectId);
 }
 
 /// <summary>
-/// DTO que contiene los detalles básicos de un proyecto
+/// DTO containing basic project details
 /// </summary>
 public record ProjectDetails(
     Guid Id,
