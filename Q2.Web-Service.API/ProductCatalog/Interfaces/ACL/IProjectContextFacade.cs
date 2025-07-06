@@ -1,11 +1,11 @@
 using System;
+using Q2.Web_Service.API.DesignLab.Interfaces.ACL;
 
 namespace Q2.Web_Service.API.ProductCatalog.Interfaces.ACL
 {
-    // Minimal stub for IProjectContextFacade to resolve build errors
-    public interface IProjectContextFacade
+    // Este es un alias para evitar conflictos de namespace
+    // Redirige al IProjectContextFacade principal en DesignLab
+    public interface IProjectContextFacade : Q2.Web_Service.API.DesignLab.Interfaces.ACL.IProjectContextFacade
     {
-        bool ProjectExists(Guid projectId);
-        dynamic FetchProjectDetailsForProduct(Guid projectId); // Replace 'dynamic' with actual type if known
     }
 }

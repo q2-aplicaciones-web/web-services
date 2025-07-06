@@ -14,7 +14,7 @@ public static class ManufacturerAnalyticsResourceFromEntityAssembler
             throw new ArgumentNullException(nameof(entity));
 
         return new ManufacturerAnalyticsResource(
-            entity.UserId.ToString(),
+            entity.ManufacturerId.ToString(),
             entity.TotalOrdersReceived,
             entity.PendingFulfillments,
             entity.ProducedProjects,

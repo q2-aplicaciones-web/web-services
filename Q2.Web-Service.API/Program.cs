@@ -1,4 +1,3 @@
-
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -172,9 +171,35 @@ builder.Services.AddScoped<
     Q2.Web_Service.API.OrderFulfillment.Domain.Services.IFulfillmentQueryService,
     Q2.Web_Service.API.OrderFulfillment.Application.Internal.Queryservices.FulfillmentQueryServiceImpl>();
 
-// Analytics Bounded Context - TODO: Fix namespaces in repository implementations
-// builder.Services.AddScoped<ICustomerAnalyticsRepository, CustomerAnalyticsRepository>();
-// builder.Services.AddScoped<IManufacturerAnalyticsRepository, ManufacturerAnalyticsRepository>();
+// Analytics Bounded Context
+builder.Services.AddScoped<
+    Q2.Web_Service.API.Analytics.Domain.Services.IManufacturerAnalyticsQueryService,
+    Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.ManufacturerAnalyticsRealTimeQueryServiceImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.Analytics.Domain.Services.ICustomerAnalyticsQueryService,
+    Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.CustomerAnalyticsRealTimeQueryServiceImpl>();
+
+// Context Facades
+builder.Services.AddScoped<
+    Q2.Web_Service.API.DesignLab.Interfaces.ACL.IProjectContextFacade,
+    Q2.Web_Service.API.DesignLab.Application.ACL.ProjectContextFacadeImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.ProductCatalog.Interfaces.ACL.ProductCatalogContextFacadeNS.IProductCatalogContextFacade,
+    Q2.Web_Service.API.ProductCatalog.Application.ACL.ProductCatalogContextFacadeImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrdersProcessing.Interfaces.REST.ACL.IOrderProcessingContextFacade,
+    Q2.Web_Service.API.OrdersProcessing.Application.ACL.OrderProcessingContextFacadeImpl>();
+
+builder.Services.AddScoped<
+    Q2.Web_Service.API.OrderFulfillment.Interfaces.ACL.IOrderFulfillmentContextFacade,
+    Q2.Web_Service.API.OrderFulfillment.Application.ACL.OrderFulfillmentContextFacadeImpl>();
+
+// Temporary registration until interfaces are properly implemented
+builder.Services.AddScoped<Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.ManufacturerAnalyticsRealTimeQueryServiceImpl>();
+builder.Services.AddScoped<Q2.Web_Service.API.Analytics.Application.Internal.Queryservices.CustomerAnalyticsRealTimeQueryServiceImpl>();
 
 // Mediator Configuration
 builder.Services.AddScoped(typeof(ICommandPipelineBehavior<>), typeof(LogginCommandBehavior<>));

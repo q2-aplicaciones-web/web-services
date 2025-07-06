@@ -1,19 +1,38 @@
 using System;
+using Q2.Web_Service.API.DesignLab.Interfaces.ACL;
 
 namespace Q2.Web_Service.API.ProductCatalog.Interfaces.ACL
 {
+    /// <summary>
+    /// Implementación concreta que delega al ProjectContextFacadeImpl principal
+    /// </summary>
     public class ProjectContextFacade : IProjectContextFacade
     {
-        public bool ProjectExists(Guid projectId)
+        private readonly Q2.Web_Service.API.DesignLab.Interfaces.ACL.IProjectContextFacade _projectContextFacade;
+
+        public ProjectContextFacade(Q2.Web_Service.API.DesignLab.Interfaces.ACL.IProjectContextFacade projectContextFacade)
         {
-            // TODO: Implement actual logic
-            return true;
+            _projectContextFacade = projectContextFacade;
         }
 
-        public dynamic FetchProjectDetailsForProduct(Guid projectId)
+        public bool ProjectExists(Guid projectId)
         {
-            // TODO: Implement actual logic
-            return new { Id = projectId, Title = "Stub Project", PreviewUrl = "stub-url", UserId = Guid.NewGuid() };
+            return _projectContextFacade.ProjectExists(projectId);
+        }
+
+        public ProjectDetails? FetchProjectDetailsForProduct(Guid projectId)
+        {
+            return _projectContextFacade.FetchProjectDetailsForProduct(projectId);
+        }
+
+        public long GetProjectCountByUserId(Guid userId)
+        {
+            return _projectContextFacade.GetProjectCountByUserId(userId);
+        }
+
+        public System.Collections.Generic.List<Guid> FetchProjectIdsByUserId(Guid userId)
+        {
+            return _projectContextFacade.FetchProjectIdsByUserId(userId);
         }
     }
 }

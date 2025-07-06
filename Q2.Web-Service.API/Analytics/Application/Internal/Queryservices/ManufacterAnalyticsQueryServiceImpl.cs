@@ -13,9 +13,9 @@ namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
             _manufacturerAnalyticsRepository = manufacturerAnalyticsRepository;
         }
 
-        public ManufacturerAnalytics? Handle(GetManufacturerAnalyticsByUserIdQuery query)
+        public ManufacturerAnalytics? Handle(GetManufacturerAnalyticsByManufacturerIdQuery query)
         {
-            return _manufacturerAnalyticsRepository.FindByUserId(query.UserId);
+            return _manufacturerAnalyticsRepository.FindByManufacturerId(query.ManufacturerId);
         }
     }
 }

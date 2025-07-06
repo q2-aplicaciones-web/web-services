@@ -20,7 +20,7 @@ public static class ModelBuilderExtensions
         entity.Property(e => e.Id)
             .HasConversion(
                 v => v.Value,
-                v => new AnalyticsId(v))
+                v => string.IsNullOrWhiteSpace(v) ? new AnalyticsId("temp_id", true) : new AnalyticsId(v))
             .HasColumnName("id");
         entity.Property(e => e.UserId).HasColumnName("user_id");
         entity.Property(e => e.TotalProjects).HasColumnName("total_projects");
@@ -37,9 +37,9 @@ public static class ModelBuilderExtensions
         entity.Property(e => e.Id)
             .HasConversion(
                 v => v.Value,
-                v => new AnalyticsId(v))
+                v => string.IsNullOrWhiteSpace(v) ? new AnalyticsId("temp_id", true) : new AnalyticsId(v))
             .HasColumnName("id");
-        entity.Property(e => e.UserId).HasColumnName("user_id");
+        entity.Property(e => e.ManufacturerId).HasColumnName("manufacturer_id");
         entity.Property(e => e.TotalOrdersReceived).HasColumnName("total_orders_received");
         entity.Property(e => e.PendingFulfillments).HasColumnName("pending_fulfillments");
         entity.Property(e => e.ProducedProjects).HasColumnName("produced_projects");

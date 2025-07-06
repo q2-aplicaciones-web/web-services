@@ -7,49 +7,57 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Q2.Web_Service.API.Analytics.Interfaces.Rest
 {
     [ApiController]
-    [Route("api/analytics")]
+    [Route("api/v1/analytics")]
     public class ManufacturerAnalyticsController : ControllerBase
     {
-        private readonly ManufacturerAnalyticsQueryServiceImpl _manufacturerAnalyticsQueryService;
+        private readonly ManufacturerAnalyticsRealTimeQueryServiceImpl _manufacturerAnalyticsQueryService;
 
-        public ManufacturerAnalyticsController(ManufacturerAnalyticsQueryServiceImpl manufacturerAnalyticsQueryService)
+        public ManufacturerAnalyticsController(ManufacturerAnalyticsRealTimeQueryServiceImpl manufacturerAnalyticsQueryService)
         {
             _manufacturerAnalyticsQueryService = manufacturerAnalyticsQueryService;
         }
 
         /// <summary>
-        /// Obtiene métricas analíticas para un manufacturer por userId.
+        /// Obtiene métricas de rendimiento para un fabricante específico.
         /// </summary>
-        /// <param name="userId">Identificador del usuario manufacturer</param>
+        /// <param name="manufacturerId">Identificador único del fabricante</param>
         /// <returns>Métricas analíticas del manufacturer</returns>
-        [HttpGet("manufacturer/{userId}")]
+        [HttpGet("manufacturer-kpis/{manufacturerId}")]
         [SwaggerOperation(
-            Summary = "Get manufacturer analytics",
-            Description = "Returns analytics metrics related to production and fulfillment for a manufacturer, such as total orders received, pending fulfillments, produced projects, and average fulfillment time."
+            Summary = "Get manufacturer KPIs",
+            Description = "Returns analytics metrics related to production and fulfillment for a manufacturer, including total orders received, pending fulfillments, produced projects, and average fulfillment time."
         )]
         [SwaggerResponse(200, "Manufacturer analytics found and returned successfully", typeof(ManufacturerAnalyticsResource))]
-        [SwaggerResponse(404, "Manufacturer analytics not found for the given userId")]
-        [SwaggerResponse(400, "Invalid userId format")]
+        [SwaggerResponse(404, "Manufacturer not found")]
+        [SwaggerResponse(400, "Invalid manufacturerId format")]
         [SwaggerResponse(500, "Internal server error")]
-        public ActionResult<ManufacturerAnalyticsResource> GetManufacturerAnalytics(string userId)
+        public ActionResult<ManufacturerAnalyticsResource> GetManufacturerKpis(string manufacturerId)
         {
-            if (!Guid.TryParse(userId, out var uuid))
-                return BadRequest();
+            if (!Guid.TryParse(manufacturerId, out var uuid))
+                return BadRequest("Invalid manufacturerId format");
 
-            var query = new GetManufacturerAnalyticsByUserIdQuery(uuid);
-            var analytics = _manufacturerAnalyticsQueryService.Handle(query);
-            if (analytics == null)
-                return NotFound();
+            var query = new GetManufacturerAnalyticsByManufacturerIdQuery(uuid);
+            
+            try
+            {
+                var analytics = _manufacturerAnalyticsQueryService.Handle(query);
+                if (analytics == null)
+                    return NotFound("Manufacturer not found");
 
-            // Mapeo directo usando ManufacturerAnalyticsResource
-            var response = new ManufacturerAnalyticsResource(
-                analytics.UserId.ToString(),
-                analytics.TotalOrdersReceived,
-                analytics.PendingFulfillments,
-                analytics.ProducedProjects,
-                analytics.AvgFulfillmentTimeDays
-            );
-            return Ok(response);
+                var response = new ManufacturerAnalyticsResource(
+                    analytics.ManufacturerId.ToString(),
+                    analytics.TotalOrdersReceived,
+                    analytics.PendingFulfillments,
+                    analytics.ProducedProjects,
+                    analytics.AvgFulfillmentTimeDays
+                );
+                
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
