@@ -384,4 +384,143 @@ public class ProjectLayersController(
                 DateTime.UtcNow));
         }
     }
+
+    /// <summary>
+    /// Update layer coordinates
+    /// </summary>
+    /// <param name="projectId">Project ID</param>
+    /// <param name="layerId">Layer ID</param>
+    /// <param name="resource">Layer coordinates update data</param>
+    /// <returns>Updated layer with new coordinates</returns>
+    [HttpPut("{projectId}/layers/{layerId}/coordinates")]
+    [SwaggerOperation(
+        Summary = "Update Layer Coordinates",
+        Description = "Updates the coordinates (x, y, z) of a specific layer within a project",
+        OperationId = "UpdateLayerCoordinates")]
+    [SwaggerResponse(200, "Layer coordinates updated successfully", typeof(LayerResource))]
+    [SwaggerResponse(400, "Invalid input data", typeof(ErrorResource))]
+    [SwaggerResponse(403, "User not authorized", typeof(ErrorResource))]
+    [SwaggerResponse(404, "Project or layer not found", typeof(ErrorResource))]
+    [SwaggerResponse(500, "Internal server error", typeof(ErrorResource))]
+    public async Task<IActionResult> UpdateLayerCoordinates(
+        [FromRoute] [Required] string projectId,
+        [FromRoute] [Required] string layerId,
+        [FromBody] UpdateLayerCoordinatesResource resource)
+    {
+        try
+        {
+            // Validate input parameters
+            if (string.IsNullOrWhiteSpace(projectId))
+            {
+                return BadRequest(new ErrorResource(
+                    "Project ID cannot be null or empty",
+                    "INVALID_PROJECT_ID",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            if (string.IsNullOrWhiteSpace(layerId))
+            {
+                return BadRequest(new ErrorResource(
+                    "Layer ID cannot be null or empty",
+                    "INVALID_LAYER_ID",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            if (resource == null)
+            {
+                return BadRequest(new ErrorResource(
+                    "Layer coordinates resource cannot be null",
+                    "NULL_RESOURCE",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return BadRequest(new ErrorResource(
+                    "Invalid request data",
+                    string.Join(", ", errors),
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            // Transform resource to command
+            var updateLayerCoordinatesCommand = UpdateLayerCoordinatesCommandFromResourceAssembler
+                .ToCommandFromResource(resource, projectId, layerId);
+
+            // Execute command
+            var updatedLayerId = await layerCommandService.Handle(updateLayerCoordinatesCommand);
+
+            if (updatedLayerId is null)
+            {
+                return BadRequest(new ErrorResource(
+                    "Failed to update layer coordinates",
+                    "UPDATE_FAILED",
+                    400,
+                    DateTime.UtcNow));
+            }
+
+            // Get the updated layer to return full details
+            var getLayerByIdQuery = new GetLayerByIdQuery(new LayerId(updatedLayerId.Id));
+            var layer = layerQueryService.Handle(getLayerByIdQuery);
+
+            if (layer is null)
+            {
+                return NotFound(new ErrorResource(
+                    $"Updated layer could not be retrieved. Layer ID: {updatedLayerId.Id}",
+                    "LAYER_NOT_FOUND_AFTER_UPDATE",
+                    404,
+                    DateTime.UtcNow));
+            }
+
+            var layerResource = LayerResourceFromEntityAssembler.FromEntity(layer);
+            return Ok(layerResource);
+        }
+        catch (ArgumentException ex) when (ex.Message.Contains("Project with ID") && ex.Message.Contains("does not exist"))
+        {
+            return NotFound(new ErrorResource(
+                $"Project not found - {ex.Message}",
+                "PROJECT_NOT_FOUND",
+                404,
+                DateTime.UtcNow));
+        }
+        catch (ArgumentException ex) when (ex.Message.Contains("Layer with ID") && ex.Message.Contains("does not exist"))
+        {
+            return NotFound(new ErrorResource(
+                $"Layer not found - {ex.Message}",
+                "LAYER_NOT_FOUND",
+                404,
+                DateTime.UtcNow));
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ErrorResource(
+                ex.Message,
+                "VALIDATION_ERROR",
+                400,
+                DateTime.UtcNow));
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(new ErrorResource(
+                $"User not authorized to update layer coordinates - {ex.Message}",
+                "UNAUTHORIZED",
+                403,
+                DateTime.UtcNow).ToString());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ErrorResource(
+                $"Internal server error occurred while updating layer coordinates - {ex.Message}",
+                "INTERNAL_SERVER_ERROR",
+                500,
+                DateTime.UtcNow));
+        }
+    }
 }
