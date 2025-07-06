@@ -1,6 +1,11 @@
+using System;
+using System.Linq;
 using Q2.Web_Service.API.Analytics.Domain.Model.Entities;
 using Q2.Web_Service.API.Analytics.Domain.Model.Queries;
 using Q2.Web_Service.API.Analytics.Domain.Services;
+using Q2.Web_Service.API.DesignLab.Interfaces.ACL;
+using Q2.Web_Service.API.ProductCatalog.Interfaces.ACL.ProductCatalogContextFacadeNS;
+using Q2.Web_Service.API.OrdersProcessing.Interfaces.REST.ACL;
 
 namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 {
@@ -9,59 +14,64 @@ namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
     /// </summary>
     public class CustomerAnalyticsRealTimeQueryServiceImpl : ICustomerAnalyticsQueryService
     {
-        // TODO: Inyectar las dependencias necesarias para acceder a:
-        // - ProjectContextFacade (para obtener proyectos del usuario)
-        // - ProductCatalogContextFacade (para verificar productos asociados)
-        // - OrderProcessingContextFacade (para obtener órdenes del usuario)
+        private readonly IProjectContextFacade _projectFacade;
+        private readonly IProductCatalogContextFacade _productCatalogFacade;
+        private readonly IOrderProcessingContextFacade _orderProcessingFacade;
 
-        public CustomerAnalyticsRealTimeQueryServiceImpl()
+        public CustomerAnalyticsRealTimeQueryServiceImpl(
+            IProjectContextFacade projectFacade,
+            IProductCatalogContextFacade productCatalogFacade,
+            IOrderProcessingContextFacade orderProcessingFacade)
         {
-            // TODO: Inyectar dependencias
+            _projectFacade = projectFacade ?? throw new ArgumentNullException(nameof(projectFacade));
+            _productCatalogFacade = productCatalogFacade ?? throw new ArgumentNullException(nameof(productCatalogFacade));
+            _orderProcessingFacade = orderProcessingFacade ?? throw new ArgumentNullException(nameof(orderProcessingFacade));
         }
 
         public CustomerAnalytics? Handle(GetCustomerAnalyticsByUserIdQuery query)
         {
-            // TODO: Implementar la lógica de cálculo en tiempo real según la documentación:
-            
-            // 1. Obtener total de proyectos del usuario
-            // var totalProjects = projectFacade.GetProjectCountByUserId(query.UserId);
+            if (query?.UserId == null || query.UserId == Guid.Empty)
+                return null;
 
-            // 2. Obtener IDs de proyectos del usuario
-            // var userProjectIds = projectFacade.FetchProjectIdsByUserId(query.UserId);
+            try
+            {
+                // 1. Obtener total de proyectos del usuario
+                var totalProjects = _projectFacade.GetProjectCountByUserId(query.UserId);
 
-            // 3. Clasificar proyectos según tengan productos o no
-            // int blueprints = 0;
-            // int designedGarments = 0;
-            // foreach (var projectId in userProjectIds)
-            // {
-            //     bool hasProducts = productCatalogFacade.ProjectHasProducts(projectId.ToString());
-            //     if (hasProducts)
-            //         designedGarments++;
-            //     else
-            //         blueprints++;
-            // }
+                // 2. Obtener IDs de proyectos del usuario
+                var userProjectIds = _projectFacade.FetchProjectIdsByUserId(query.UserId);
 
-            // 4. Obtener órdenes completadas
-            // var userOrders = orderProcessingFacade.FetchOrdersByUserId(query.UserId);
-            // int completed = userOrders.Count;
+                // 3. Clasificar proyectos según tengan productos o no
+                int blueprints = 0;
+                int designedGarments = 0;
+                
+                foreach (var projectId in userProjectIds)
+                {
+                    bool hasProducts = _productCatalogFacade.ProjectHasProducts(projectId.ToString());
+                    if (hasProducts)
+                        designedGarments++;
+                    else
+                        blueprints++;
+                }
 
-            // 5. Crear y retornar la entidad
-            // return CustomerAnalytics.CreateFromRealTimeData(
-            //     query.UserId,
-            //     (int)totalProjects,
-            //     blueprints,
-            //     designedGarments,
-            //     completed
-            // );
+                // 4. Obtener órdenes completadas
+                var userOrders = _orderProcessingFacade.FetchOrdersByUserId(query.UserId);
+                int completed = userOrders.Count;
 
-            // Por ahora retorno datos de ejemplo hasta que se implementen las dependencias
-            return CustomerAnalytics.CreateFromRealTimeData(
-                query.UserId,
-                28,  // totalProjects
-                8,   // blueprints
-                20,  // designedGarments
-                15   // completed
-            );
+                // 5. Crear y retornar la entidad
+                return CustomerAnalytics.CreateFromRealTimeData(
+                    query.UserId,
+                    (int)totalProjects,
+                    blueprints,
+                    designedGarments,
+                    completed
+                );
+            }
+            catch (Exception)
+            {
+                // En caso de error, retorna null para indicar que no se pudieron obtener los analytics
+                return null;
+            }
         }
     }
 }
