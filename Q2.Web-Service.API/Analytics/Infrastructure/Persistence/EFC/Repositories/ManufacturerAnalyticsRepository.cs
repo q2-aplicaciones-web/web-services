@@ -14,10 +14,10 @@ namespace Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Repositori
             _context = context;
         }
 
-        public ManufacturerAnalytics? FindByUserId(Guid userId)
+        public ManufacturerAnalytics? FindByManufacturerId(Guid manufacturerId)
         {
             return _context.Set<ManufacturerAnalytics>()
-                .FirstOrDefault(ma => ma.UserId == userId);
+                .FirstOrDefault(ma => ma.ManufacturerId == manufacturerId);
         }
 
         // Implementar otros métodos CRUD si es necesario
