@@ -11,13 +11,28 @@ namespace Q2.Web_Service.API.Analytics.Domain.Model.ValueObjects
         public string Value { get; private set; } = string.Empty;
 
         // Constructor protegido requerido por EF Core
-        protected AnalyticsId() { }
+        protected AnalyticsId() 
+        { 
+            Value = string.Empty; 
+        }
 
         public AnalyticsId(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("AnalyticsId cannot be null or blank", nameof(value));
             Value = value;
+        }
+
+        // Constructor interno para EF Core que permite valores temporalmente vacíos
+        internal AnalyticsId(string value, bool allowEmpty)
+        {
+            Value = value;
+        }
+
+        // Método factory para crear desde un string, usado por EF Core
+        public static AnalyticsId FromString(string value)
+        {
+            return new AnalyticsId(value);
         }
 
         public override bool Equals(object? obj) => Equals(obj as AnalyticsId);
