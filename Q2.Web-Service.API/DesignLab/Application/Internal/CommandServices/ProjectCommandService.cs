@@ -23,4 +23,37 @@ public class ProjectCommandService(IProjectRepository projectRepository, IUnitOf
         return project.Id;
     }
   
+    public async Task<ProjectId?> Handle(UpdateProjectDetailsCommand command)
+    {
+        var project = await projectRepository.FindByIdAsync(command.ProjectId);
+        if (project is null)
+        {
+            throw new ArgumentException($"Project with ID {command.ProjectId.Id} does not exist.");
+        }
+
+        project.UpdateDetails(command.PreviewUrl, command.Status, command.GarmentColor, command.GarmentSize, command.GarmentGender);
+        projectRepository.Update(project);
+        await unitOfWork.CompleteAsync();
+
+        return project.Id;
+    }
+
+    public async Task Handle(DeleteProjectCommand command)
+    {
+        var project = await projectRepository.FindByIdAsync(command.ProjectId);
+        if (project is null)
+        {
+            throw new ArgumentException($"Project with ID {command.ProjectId.Id} does not exist.");
+        }
+
+        try
+        {
+            projectRepository.Remove(project);
+            await unitOfWork.CompleteAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to delete project with ID {command.ProjectId.Id}", ex);
+        }
+    }
 }

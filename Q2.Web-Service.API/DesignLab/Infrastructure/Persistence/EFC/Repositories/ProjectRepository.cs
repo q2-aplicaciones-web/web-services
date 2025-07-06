@@ -24,4 +24,12 @@ public class ProjectRepository(AppDbContext context) : BaseRepository<Project>(c
             .Include(project => project.Layers)
             .FirstOrDefaultAsync(project => project.Id == new ProjectId(projectId));
     }
+
+    public async Task<Project?> FindByIdAsync(ProjectId projectId)
+    {
+        return await Context
+            .Set<Project>()
+            .Include(project => project.Layers)
+            .FirstOrDefaultAsync(project => project.Id == projectId);
+    }
 }
