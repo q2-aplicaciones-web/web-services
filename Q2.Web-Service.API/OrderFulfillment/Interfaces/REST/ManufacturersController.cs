@@ -29,7 +29,7 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
         {
             var manufacturers = _manufacturerQueryService.Handle(new GetAllManufacturersQuery());
             if (manufacturers == null || manufacturers.Count == 0)
-                return NotFound();
+                return Ok(new List<ManufacturerResource>());
             var resources = new List<ManufacturerResource>();
             foreach (var m in manufacturers)
                 resources.Add(ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(m));
