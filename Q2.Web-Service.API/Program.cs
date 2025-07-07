@@ -236,8 +236,7 @@ builder.Services.AddCortexMediator(
         options.AddOpenCommandPipelineBehavior(typeof(LogginCommandBehavior<>));
     });
 
-// Obtener el secret directamente de la variable de entorno para JWT
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? string.Empty;
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "ZyX7p9@LkR$8m2BvR#q6WdE!fUj^HsNm";
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
