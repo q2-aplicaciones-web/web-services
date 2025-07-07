@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Entities;
 
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.ValueObjects;

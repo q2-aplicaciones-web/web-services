@@ -48,11 +48,8 @@ public class ProjectController(
 
             if (!projects.Any())
             {
-                return NotFound(new ErrorResource(
-                    $"No projects found for user with ID {userId}",
-                    "NOT_FOUND",
-                    404,
-                    DateTime.UtcNow));
+                // return an empty array
+                return Ok(new List<ProjectResource>());
             }
 
             var projectsResources = projects.Select(ProjectResourceFromEntityAssembler.toResourceFromEntity).ToList();
