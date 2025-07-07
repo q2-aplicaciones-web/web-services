@@ -25,19 +25,20 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
         }
 
         [HttpGet]
-        public ActionResult GetAllManufacturers([FromQuery] Guid userId)
+        public ActionResult GetAllManufacturers()
         {
-            if (userId == null)
-            {
-                var manufacturers = _manufacturerQueryService.Handle(new GetAllManufacturersQuery());
-                if (manufacturers == null || manufacturers.Count == 0)
-                    return NotFound();
-                var resources = new List<ManufacturerResource>();
-                foreach (var m in manufacturers)
-                    resources.Add(ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(m));
-                return Ok(resources);
-            }
-
+            var manufacturers = _manufacturerQueryService.Handle(new GetAllManufacturersQuery());
+            if (manufacturers == null || manufacturers.Count == 0)
+                return Ok(new List<ManufacturerResource>());
+            var resources = new List<ManufacturerResource>();
+            foreach (var m in manufacturers)
+                resources.Add(ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(m));
+            return Ok(resources);
+        }
+        
+        [HttpGet("users/{userId:guid}")]
+        public ActionResult GetAllManufacturers([FromRoute] Guid userId)
+        {
             var query = new GetManufacturerByUserIdQuery(new UserId(userId));
             var manufacturer = _manufacturerQueryService.Handle(query);
             if (manufacturer == null)
@@ -46,6 +47,8 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             var resource = ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(manufacturer);
             return Ok(resource);
         }
+        
+        
 
         [HttpPost]
         public ActionResult<ManufacturerResource> CreateManufacturer([FromBody] CreateManufacturerResource resource)
