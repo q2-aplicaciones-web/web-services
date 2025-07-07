@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
 # Copy .env and appsettings files if needed
-COPY Q2.Web-Service.API/.env ./
+# COPY Q2.Web-Service.API/.env ./
 COPY Q2.Web-Service.API/appsettings.*json ./
 ENV ASPNETCORE_ENVIRONMENT=Development
 EXPOSE 5000
