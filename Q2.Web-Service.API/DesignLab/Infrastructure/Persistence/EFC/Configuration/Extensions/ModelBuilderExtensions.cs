@@ -16,6 +16,7 @@ public static class ModelBuilderExtensions
     private static void ConfigureProject(ModelBuilder builder)
     {
         var entity = builder.Entity<Project>();
+        entity.ToTable("Projects");
         entity.HasKey(p => p.Id);
 
         entity.Property(p => p.Id)
@@ -67,7 +68,13 @@ public static class ModelBuilderExtensions
     private static void ConfigureLayer(ModelBuilder builder)
     {
         var entity = builder.Entity<Layer>();
+        entity.ToTable("Layers");
         entity.HasKey(l => l.Id);
+
+        // Configure inheritance - Table Per Hierarchy (TPH)
+        entity.HasDiscriminator<ELayerType>("LayerType")
+            .HasValue<TextLayer>(ELayerType.Text)
+            .HasValue<ImageLayer>(ELayerType.Image);
 
         entity.Property(l => l.Id)
             .IsRequired()
@@ -98,5 +105,30 @@ public static class ModelBuilderExtensions
         entity.Property(l => l.UpdatedAt)
             .IsRequired()
             .ValueGeneratedOnAddOrUpdate();
+
+        // Configure TextLayer specific properties
+        builder.Entity<TextLayer>(textEntity =>
+        {
+            textEntity.Property(t => t.Text).IsRequired();
+            textEntity.Property(t => t.FontColor).IsRequired();
+            textEntity.Property(t => t.FontFamily).IsRequired();
+            textEntity.Property(t => t.FontSize).IsRequired();
+            textEntity.Property(t => t.IsBold).IsRequired();
+            textEntity.Property(t => t.IsItalic).IsRequired();
+            textEntity.Property(t => t.IsUnderline).IsRequired();
+        });
+
+        // Configure ImageLayer specific properties
+        builder.Entity<ImageLayer>(imageEntity =>
+        {
+            imageEntity.Property(i => i.ImageUrl)
+                .IsRequired()
+                .HasConversion(
+                    uri => uri.ToString(),
+                    str => new Uri(str)
+                );
+            imageEntity.Property(i => i.Width).IsRequired();
+            imageEntity.Property(i => i.Height).IsRequired();
+        });
     }
 }

@@ -1,16 +1,21 @@
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Queries;
-using Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories;
+using Q2.Web_Service.API.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.API.Analytics.Domain.Model.Queries;
+using Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Repositories;
 
-namespace Q2.WebService.API.Analytics.Application.Internal.QueryServices
+namespace Q2.Web_Service.API.Analytics.Application.Internal.Queryservices
 {
-    public class ManufacturerAnalyticsQueryServiceImpl(ManufacturerAnalyticsRepository manufacturerAnalyticsRepository)
+    public class ManufacturerAnalyticsQueryServiceImpl
     {
-        private readonly ManufacturerAnalyticsRepository _manufacturerAnalyticsRepository = manufacturerAnalyticsRepository;
+        private readonly ManufacturerAnalyticsRepository _manufacturerAnalyticsRepository;
 
-        public ManufacturerAnalytics Handle(GetManufacturerAnalyticsByUserIdQuery query)
+        public ManufacturerAnalyticsQueryServiceImpl(ManufacturerAnalyticsRepository manufacturerAnalyticsRepository)
         {
-            return _manufacturerAnalyticsRepository.FindByUserId(query.UserId);
+            _manufacturerAnalyticsRepository = manufacturerAnalyticsRepository;
+        }
+
+        public ManufacturerAnalytics? Handle(GetManufacturerAnalyticsByManufacturerIdQuery query)
+        {
+            return _manufacturerAnalyticsRepository.FindByManufacturerId(query.ManufacturerId);
         }
     }
 }

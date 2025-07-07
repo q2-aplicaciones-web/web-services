@@ -2,16 +2,19 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.ValueObjects;
+using Q2.Web_Service.API.Analytics.Domain.Model.ValueObjects;
 
-namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities
+namespace Q2.Web_Service.API.Analytics.Domain.Model.Entities
 {
+    /// <summary>
+    /// Entidad que representa las métricas analíticas calculadas para un customer
+    /// </summary>
     [Table("customer_analytics")]
     public class CustomerAnalytics
     {
         [Key]
         [Column("id")]
-        public AnalyticsId Id { get; private set; }
+        public AnalyticsId Id { get; private set; } = null!;
 
         [Column("user_id")]
         public Guid UserId { get; private set; }
@@ -29,7 +32,10 @@ namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities
         public int Completed { get; private set; }
 
         // Constructor protegido requerido por EF Core
-        protected CustomerAnalytics() { }
+        protected CustomerAnalytics() 
+        {
+            Id = null!;
+        }
 
         public CustomerAnalytics(
             AnalyticsId id,
@@ -45,6 +51,26 @@ namespace Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities
             Blueprints = blueprints;
             DesignedGarments = designedGarments;
             Completed = completed;
+        }
+
+        /// <summary>
+        /// Crea una nueva instancia con métricas calculadas en tiempo real
+        /// </summary>
+        public static CustomerAnalytics CreateFromRealTimeData(
+            Guid userId,
+            int totalProjects,
+            int blueprints,
+            int designedGarments,
+            int completed)
+        {
+            return new CustomerAnalytics(
+                new AnalyticsId($"customer_{userId}"),
+                userId,
+                totalProjects,
+                blueprints,
+                designedGarments,
+                completed
+            );
         }
     }
 }

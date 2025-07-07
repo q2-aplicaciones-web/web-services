@@ -1,33 +1,29 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources;
 
-namespace Q2.WebService.API.ProductCatalog.Interfaces.REST.Resources
+namespace Q2.Web_Service.API.ProductCatalog.Interfaces.REST.Resources
 {
     /// <summary>
-    /// Resource for creating a new product
+    /// Resource for creating a new Product.
+    /// Uses primitive types at the API boundary as part of the anti-corruption layer pattern.
     /// </summary>
-    public class CreateProductResource
+public class CreateProductResource
+{
+    public string? ProjectId { get; set; }
+    public Guid UserId { get; set; }
+    public decimal PriceAmount { get; set; }
+    public string? PriceCurrency { get; set; }
+    public string? Status { get; set; }
+
+    public CreateProductResource() { }
+
+    public CreateProductResource(string projectId, Guid userId, decimal priceAmount, string priceCurrency, string? status)
     {
-        [Required]
-        public string ProjectId { get; set; }
-        
-        [Required]
-        public string ManufacturerId { get; set; }
-        
-        [Required]
-        [Range(0.01, double.MaxValue)]
-        public decimal Price { get; set; }
-        
-        [Required]
-        [StringLength(3, MinimumLength = 3)]
-        public string Currency { get; set; } = "USD";
-        
-        public List<string> Tags { get; set; } = new();
-        
-        public List<string> Gallery { get; set; } = new();
-        
-        [Required]
-        public string Status { get; set; } = "Available";
+        ProjectId = projectId;
+        UserId = userId;
+        PriceAmount = priceAmount;
+        PriceCurrency = priceCurrency;
+        Status = status;
     }
+}
 }

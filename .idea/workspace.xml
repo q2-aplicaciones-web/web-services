@@ -19,8 +19,8 @@
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Domain/model/queries/GetManufacturerAnalyticsByUserIdQuery.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Domain/model/valueobjects/AnalyticsId.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Domain/services/AnalyticsCommandService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Infrastructure/persistence/jpa/repositories/CustomerAnalyticsRepository.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Infrastructure/persistence/jpa/repositories/ManufacturerAnalyticsRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Infrastructure/persistence/EFC/repositories/CustomerAnalyticsRepository.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Infrastructure/persistence/EFC/repositories/ManufacturerAnalyticsRepository.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Interfaces/rest/CustomerAnalyticsController.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Interfaces/rest/ManufacterAnalyticsController.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Q2.Web-Service.API/Analytics/Interfaces/rest/resources/CustomerAnalyticsResource.cs" beforeDir="false" />

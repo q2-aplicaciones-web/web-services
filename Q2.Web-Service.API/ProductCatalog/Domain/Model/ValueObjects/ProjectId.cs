@@ -1,31 +1,22 @@
 using System;
 
-namespace Q2.WebService.API.ProductCatalog.Domain.Model.ValueObjects
+namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.ValueObjects
 {
-    /// <summary>
-    /// Represents a Project identifier as a value object
-    /// </summary>
-    public record ProjectId
+    // Value object for ProjectId
+    public sealed record ProjectId
     {
-        public Guid Value { get; }
+        public string Value { get; }
 
-        private ProjectId(Guid value)
+        public ProjectId(string value)
         {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Project ID cannot be null or blank", nameof(value));
             Value = value;
         }
 
-        public static ProjectId Of(Guid value)
-        {
-            return new ProjectId(value);
-        }
+        public static ProjectId Of(string id) => new ProjectId(id);
+        public static ProjectId Of(Guid id) => new ProjectId(id.ToString());
 
-        public static ProjectId Of(string value)
-        {
-            return new ProjectId(Guid.Parse(value));
-        }
-
-        public static implicit operator Guid(ProjectId projectId) => projectId.Value;
-        
-        public override string ToString() => Value.ToString();
+        public override string ToString() => Value;
     }
 }

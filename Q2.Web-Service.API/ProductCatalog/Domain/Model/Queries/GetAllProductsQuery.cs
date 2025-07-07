@@ -1,7 +1,4 @@
-namespace Q2.WebService.API.ProductCatalog.Domain.Model.Queries
+namespace Q2.Web_Service.API.ProductCatalog.Domain.Model.Queries
 {
-    /// <summary>
-    /// Query to get all products
-    /// </summary>
-    public record GetAllProductsQuery();
+    public record GetAllProductsQuery;
 }

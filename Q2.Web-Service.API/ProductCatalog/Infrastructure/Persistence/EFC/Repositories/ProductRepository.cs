@@ -1,64 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
-using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Repositories;
-using Q2.WebService.API.ProductCatalog.Domain.Model.Aggregates;
-using Q2.WebService.API.ProductCatalog.Domain.Model.ValueObjects;
-using Q2.WebService.API.ProductCatalog.Domain.Repositories;
+using Q2.Web_Service.API.ProductCatalog.Domain.Model.Aggregates;
+using Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
 
-namespace Q2.WebService.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories;
-
-/// <summary>
-/// Implementation of the product repository
-/// </summary>
-public class ProductRepository(AppDbContext context) : BaseRepository<Product>(context), IProductRepository
+// Ensure the interface is referenced from the correct file and namespace
+namespace Q2.Web_Service.API.ProductCatalog.Infrastructure.Persistence.EFC.Repositories
 {
-    public async Task<Product?> FindByIdAsync(Guid id)
+public class ProductRepository : IProductRepository
+{
+    private readonly Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.AppDbContext _dbContext;
+
+    public ProductRepository(Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration.AppDbContext dbContext)
     {
-        return await Context.Set<Product>()
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(p => p.Id == id);
+        _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Product>> FindAllAsync()
+    public async Task<Product?> FindByIdAsync(Guid productId)
     {
-        return await Context.Set<Product>()
-            .Include(p => p.Comments)
-            .ToListAsync();
+        return await _dbContext.Products.FindAsync(productId);
     }
 
-    public async Task<IEnumerable<Product>> FindByProjectIdAsync(ProjectId projectId)
+    public async Task SaveAsync(Product product)
     {
-        return await Context.Set<Product>()
-            .Include(p => p.Comments)
-            .Where(p => p.ProjectId.Value == projectId.Value)
-            .ToListAsync();
+        if (product.Id == Guid.Empty)
+            product.Id = Guid.NewGuid();
+
+        var exists = await _dbContext.Products.AnyAsync(p => p.Id == product.Id);
+        if (!exists)
+        {
+            await _dbContext.Products.AddAsync(product);
+        }
+        else
+        {
+            _dbContext.Products.Update(product);
+            // Ensure EF Core tracks changes to the owned Price value object
+            _dbContext.Entry(product).Reference(p => p.Price).IsModified = true;
+        }
+        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Product>> FindByTagsAsync(List<string> tags)
+    public async Task<bool> ExistsByIdAsync(Guid productId)
     {
-        if (tags == null || !tags.Any())
-            return new List<Product>();
-
-        return await Context.Set<Product>()
-            .Include(p => p.Comments)
-            .Where(p => p.Tags.Any(t => tags.Contains(t)))
-            .ToListAsync();
+        return await _dbContext.Products.AnyAsync(p => p.Id == productId);
     }
 
-    public async Task AddAsync(Product product)
+    public async Task DeleteByIdAsync(Guid productId)
     {
-        await Context.Set<Product>().AddAsync(product);
+        var product = await _dbContext.Products.FindAsync(productId);
+        if (product != null)
+        {
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
-    public Task UpdateAsync(Product product)
+    public async Task<List<Product>> FindAllAsync()
     {
-        Context.Set<Product>().Update(product);
-        return Task.CompletedTask;
+        return await _dbContext.Products.ToListAsync();
     }
 
-    public Task RemoveAsync(Product product)
+    public async Task<List<Product>> FindByProjectIdAsync(string projectId)
     {
-        Context.Set<Product>().Remove(product);
-        return Task.CompletedTask;
+        var all = await _dbContext.Products.ToListAsync();
+        return all.Where(p => p.ProjectId != null && p.ProjectId.Value == projectId).ToList();
     }
+}
 }

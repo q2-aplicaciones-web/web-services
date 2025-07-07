@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using Quri.Teelab.Api.Teelab.Analytics.Domain.Model.Entities;
+using Q2.Web_Service.API.Analytics.Domain.Model.Entities;
 using Q2.Web_Service.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 
-namespace Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositories
+namespace Q2.Web_Service.API.Analytics.Infrastructure.Persistence.EFC.Repositories
 {
     public class CustomerAnalyticsRepository
     {
@@ -14,8 +14,9 @@ namespace Q2.Web_Service.API.analytics.infrastructure.persistence.jpa.repositori
             _context = context;
         }
 
-        public CustomerAnalytics FindByUserId(Guid userId)
+        public CustomerAnalytics? FindByUserId(Guid userId)
         {
+            // UserId is a Guid, so nullability warning is only for possible not found
             return _context.Set<CustomerAnalytics>()
                 .FirstOrDefault(ca => ca.UserId == userId);
         }

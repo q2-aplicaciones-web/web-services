@@ -19,4 +19,8 @@ public class ProjectQueryService(IProjectRepository projectRepository): IProject
         return await projectRepository.GetProjectByIdAsync(query.ProjectId);
     }
     
+    public async Task<IEnumerable<Project>> Handle(GetAllProjectsQuery query)
+    {
+        return await projectRepository.ListAsync();
+    }
 }
