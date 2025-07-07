@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Queries;
+using Q2.Web_Service.API.OrderFulfillment.Domain.Model.ValueObjects;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Services;
 using Q2.Web_Service.API.OrderFulfillment.Interfaces.REST.Resources;
 using Q2.Web_Service.API.OrderFulfillment.Interfaces.REST.Transform;
@@ -12,27 +13,38 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
     [Route("api/v1/manufacturers")]
     public class ManufacturersController : ControllerBase
     {
-        private readonly Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerQueryService _manufacturerQueryService;
-        private readonly Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerCommandService _manufacturerCommandService;
+        private readonly IManufacturerQueryService _manufacturerQueryService;
+        private readonly IManufacturerCommandService _manufacturerCommandService;
 
         public ManufacturersController(
-            Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerQueryService manufacturerQueryService,
-            Q2.Web_Service.API.OrderFulfillment.Domain.Services.IManufacturerCommandService manufacturerCommandService)
+            IManufacturerQueryService manufacturerQueryService,
+            IManufacturerCommandService manufacturerCommandService)
         {
             _manufacturerQueryService = manufacturerQueryService;
             _manufacturerCommandService = manufacturerCommandService;
         }
 
         [HttpGet]
-        public ActionResult<IList<ManufacturerResource>> GetAllManufacturers()
+        public ActionResult GetAllManufacturers([FromQuery] Guid userId)
         {
-            var manufacturers = _manufacturerQueryService.Handle(new GetAllManufacturersQuery());
-            if (manufacturers == null || manufacturers.Count == 0)
+            if (userId == null)
+            {
+                var manufacturers = _manufacturerQueryService.Handle(new GetAllManufacturersQuery());
+                if (manufacturers == null || manufacturers.Count == 0)
+                    return NotFound();
+                var resources = new List<ManufacturerResource>();
+                foreach (var m in manufacturers)
+                    resources.Add(ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(m));
+                return Ok(resources);
+            }
+
+            var query = new GetManufacturerByUserIdQuery(new UserId(userId));
+            var manufacturer = _manufacturerQueryService.Handle(query);
+            if (manufacturer == null)
                 return NotFound();
-            var resources = new List<ManufacturerResource>();
-            foreach (var m in manufacturers)
-                resources.Add(ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(m));
-            return Ok(resources);
+
+            var resource = ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(manufacturer);
+            return Ok(resource);
         }
 
         [HttpPost]
@@ -43,7 +55,8 @@ namespace Q2.Web_Service.API.OrderFulfillment.Interfaces.REST
             if (manufacturer == null)
                 return BadRequest();
             var manufacturerResource = ManufacturerResourceFromEntityAssembler.ToResourceFromEntity(manufacturer);
-            return CreatedAtAction(nameof(GetAllManufacturers), new { id = manufacturerResource.Id }, manufacturerResource);
+            return CreatedAtAction(nameof(GetAllManufacturers), new { id = manufacturerResource.Id },
+                manufacturerResource);
         }
     }
 }

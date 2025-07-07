@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Commands;
 using Q2.Web_Service.API.OrderFulfillment.Domain.Model.Queries;
