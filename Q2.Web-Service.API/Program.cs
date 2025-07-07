@@ -32,17 +32,21 @@ using Q2.Web_Service.API.Shared.Infrastructure.Stripe;
 using Q2.Web_Service.API.Shared.Infrastructure.Stripe.Configuration;
 using Q2.Web_Service.API.Shared.Infrastructure.Stripe.Middleware;
 using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add secrets configuration file
 builder.Configuration.AddJsonFile("Properties/secrets.json", optional: true, reloadOnChange: true);
 
+// Cargar variables de entorno desde .env
+Env.Load();
+
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 // Add CORS Policy
 builder.Services.AddCors(options =>
@@ -127,7 +131,11 @@ builder.Services.AddScoped<ILayerCommandService, LayerCommandService>();
 builder.Services.AddScoped<ILayerQueryService, LayerQueryService>();
 
 // IAM Bounded Context
-builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+// Configurar TokenSettings para usar JWT_SECRET desde variable de entorno
+builder.Services.Configure<TokenSettings>(options =>
+{
+    options.Secret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? string.Empty;
+});
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
 builder.Services.AddScoped<IUserQueryService, UserQueryService>();
@@ -228,7 +236,8 @@ builder.Services.AddCortexMediator(
         options.AddOpenCommandPipelineBehavior(typeof(LogginCommandBehavior<>));
     });
 
-var tokenSettings = builder.Configuration.GetSection("TokenSettings").Get<TokenSettings>() ?? new TokenSettings { Secret = string.Empty };
+// Obtener el secret directamente de la variable de entorno para JWT
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? string.Empty;
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -242,7 +251,7 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Secret))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
     };
 });
 
